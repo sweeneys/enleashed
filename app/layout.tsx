@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import "@/styles/globals.css";
 import type { ReactNode } from "react";
 
@@ -5,12 +7,12 @@ export const metadata = {
   title: "Energy Unleashed",
   description:
     "PhD portfolio with inline highlights, comments, and AI feedback synthesis.",
-  icons: { icon: "/icon.png" }, // optional: add public/icon.png (512x512)
+  icons: { icon: "/logo-mark.png" }, // ✅ uses your circle logo
   openGraph: {
     title: "Energy Unleashed",
     description:
       "PhD portfolio with inline highlights, comments, and AI feedback synthesis.",
-    images: [{ url: "/hero.jpg", width: 1200, height: 630 }], // optional: add public/hero.jpg
+    images: [{ url: "/hero.jpg", width: 1200, height: 630 }], // ✅ put hero.jpg in /public
   },
 };
 
@@ -53,7 +55,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
               title="UK context"
             >
               <img
-                src="/uk.svg"
+                src="/flag.png"
                 alt="United Kingdom"
                 className="h-3.5 w-5 rounded-[2px] object-cover"
                 onError={(e) => {
