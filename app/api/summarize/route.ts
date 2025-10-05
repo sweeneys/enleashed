@@ -1,5 +1,8 @@
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
+
 import { NextRequest, NextResponse } from "next/server"
-import { prisma } from "@/server/prisma";
+import { prisma } from "../../../src/server/prisma"
 import OpenAI from "openai"
 
 export async function POST(req: NextRequest) {
