@@ -2,17 +2,18 @@ export const dynamic = 'force-dynamic';
 
 import "@/styles/globals.css";
 import type { ReactNode } from "react";
+import Image from "next/image";
 
 export const metadata = {
   title: "Energy Unleashed",
   description:
     "PhD portfolio with inline highlights, comments, and AI feedback synthesis.",
-  icons: { icon: "/logo-mark.png" }, // ✅ uses your circle logo
+  icons: { icon: "/logo-mark.png" },
   openGraph: {
     title: "Energy Unleashed",
     description:
       "PhD portfolio with inline highlights, comments, and AI feedback synthesis.",
-    images: [{ url: "/hero.jpg", width: 1200, height: 630 }], // ✅ put hero.jpg in /public
+    images: [{ url: "/hero.jpg", width: 1200, height: 630 }],
   },
 };
 
@@ -24,13 +25,12 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
             {/* Brand */}
             <a href="/" className="flex items-center gap-3 font-semibold">
-              <img
+              <Image
                 src="/logo-mark.png"
                 alt="Energy Unleashed"
+                width={32}
+                height={32}
                 className="h-8 w-8 rounded-full object-cover ring-1 ring-black/10 shadow-sm"
-                onError={(e) => {
-                  (e.currentTarget as HTMLImageElement).style.display = "none";
-                }}
               />
               <span className="text-lg tracking-tight">Energy Unleashed</span>
             </a>
@@ -54,13 +54,12 @@ export default function RootLayout({ children }: { children: ReactNode }) {
               className="flex items-center gap-2 rounded-full border px-3 py-1 text-xs shadow-sm hover:bg-zinc-50"
               title="UK context"
             >
-              <img
+              <Image
                 src="/flag.png"
                 alt="United Kingdom"
+                width={20}
+                height={14}
                 className="h-3.5 w-5 rounded-[2px] object-cover"
-                onError={(e) => {
-                  (e.currentTarget as HTMLImageElement).style.display = "none";
-                }}
               />
               <span>UK</span>
             </a>
