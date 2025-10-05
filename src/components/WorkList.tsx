@@ -1,16 +1,16 @@
 import Link from "next/link";
 import { prisma } from "@/server/prisma";
-import type { Work } from "@prisma/client";  // pull in Prisma types
+import type { Work } from "@prisma/client";
 
 export default async function WorkList({
   category,
   title,
 }: {
-  category: Work["category"]; // ✅ ensures it matches your enum
+  category: Work["category"]; // enum Category from schema
   title: string;
 }) {
   const works = await prisma.work.findMany({
-    where: { category },
+    where: { category: { equals: category } }, // ✅ explicit equals
     orderBy: { createdAt: "desc" },
   });
 
