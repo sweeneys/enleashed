@@ -30,26 +30,7 @@ npm run db:seed
 
 # 4) Dev
 npm run dev
-```
 
-Open http://localhost:3000
 
-- Home lists works.
-- Click a work to read. Select text → choose comment or highlight.
-- Admin at `/admin` (you will be prompted; server also checks header).
-
-## Deploy
-
-- Vercel for frontend.
-- Use Neon/Supabase Postgres for `DATABASE_URL` in production.
-- Run `npx prisma migrate deploy` on deploy.
-- Add a cron (Vercel Cron) to POST to `/api/summarize` daily with `{ "workSlug": "thesis-overview", "period":"rolling-7d" }`.
-
-## Notes
-
-- Selections are stored as offsets per block. If you drastically change block text,
-  old offsets may drift. Prefer stable editing or reflow in the admin to minimize drift.
-- Swap to a richer editor (Tiptap/ProseMirror) later for resilient ranges (e.g.,
-  position mapping). This MVP keeps it simple and auditable.
-- Extend the `Highlight.reaction` to be enum-like: love/insightful/unclear/disagree.
-- Add auth (NextAuth) if you want named users.
+# Enleashed Tech
+First deploy via GitHub Desktop 🚀
