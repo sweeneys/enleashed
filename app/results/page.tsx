@@ -1,6 +1,6 @@
 export const dynamic = 'force-dynamic';
 import Link from "next/link";
-import { prisma } from "@/src/server/prisma";
+import { prisma } from "@/server/prisma"
 
 export default async function Results() {
   const works = await prisma.work.findMany({
