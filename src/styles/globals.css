@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.mark {
+  background: #fff2a8;
+  padding: 0 .1rem;
+  border-radius: .15rem;
+}
+.annotation:hover {
+  outline: 2px solid rgba(0,0,0,.25);
+}
+.comment-pin {
+  cursor: pointer;
+  border-bottom: 1px dashed rgba(0,0,0,.2);
+}
