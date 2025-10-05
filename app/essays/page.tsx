@@ -1,12 +1,7 @@
 export const dynamic = 'force-dynamic';
 
-import WorkList from "../../components/WorkList"; // adjust if you moved it
+import WorkList from "@/components/WorkList";
 
 export default function EssaysPage() {
-  return (
-    <WorkList
-      category="ESSAY"
-      title="Essays"
-    />
-  );
+  return <WorkList category="ESSAY" title="Essays" />;
 }

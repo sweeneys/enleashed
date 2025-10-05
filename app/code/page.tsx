@@ -1,12 +1,7 @@
 export const dynamic = 'force-dynamic';
 
-import WorkList from "../../components/WorkList"; // adjust path if needed
+import WorkList from "@/components/WorkList";
 
 export default function CodePage() {
-  return (
-    <WorkList
-      category="CODE"
-      title="Code"
-    />
-  );
+  return <WorkList category="CODE" title="Code" />;
 }
