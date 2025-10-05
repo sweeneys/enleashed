@@ -13,9 +13,13 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <header className="border-b">
           <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
             <a href="/" className="font-semibold">PhD Portfolio</a>
-            <nav className="text-sm gap-4 flex">
-              <a href="/admin" className="underline">Admin</a>
+              <nav className="text-sm gap-4 flex">
+              <a href="/story" className="underline">Story</a>
+              <a href="/essays" className="underline">Essays</a>
+              <a href="/code" className="underline">Code</a>
+              <a href="/results" className="underline">Results</a>
               <a href="/about" className="underline">About</a>
+              <a href="/admin" className="underline">Admin</a>
             </nav>
           </div>
         </header>

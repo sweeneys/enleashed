@@ -12,6 +12,7 @@ model Work {
   slug      String    @unique
   title     String
   summary   String?
+  category  Category  @default(ESSAY)   // ✅ new
   bodyMdx   String    // MDX content split into block elements client-side
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
@@ -50,4 +51,11 @@ model FeedbackSummary {
   content   String   // AI-generated synthesis markdown
   createdAt DateTime @default(now())
   work      Work     @relation(fields: [workId], references: [id], onDelete: Cascade)
+}
+
+enum Category {
+  STORY
+  ESSAY
+  CODE
+  RESULTS
 }

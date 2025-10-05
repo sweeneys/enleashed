@@ -9,6 +9,7 @@ async function main() {
       slug: 'thesis-overview',
       title: 'PhD Thesis Overview',
       summary: 'A concise overview of my PhD research questions, methods, and contributions.',
+      category: 'ESSAY',   // ✅ new field
       bodyMdx: `
 # Title: Market Design, Flexibility, and Fairness in Electricity Systems
 

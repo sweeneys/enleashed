@@ -7,13 +7,11 @@ export default function Admin() {
   const [title, setTitle] = useState("New Work Title")
   const [summary, setSummary] = useState("")
   const [bodyMdx, setBodyMdx] = useState("# Heading\n\nWrite MDX here.")
+  const [category, setCategory] = useState<"STORY"|"ESSAY"|"CODE"|"RESULTS">("ESSAY")
 
   useEffect(() => {
     const token = prompt("Enter admin secret")
-    if (token === process.env.NEXT_PUBLIC_ADMIN_PLACEHOLDER) {
-      // This placeholder prevents exposing real secret. Real check is on server.
-    }
-    // naive client-gate; server also checks header
+    // NOTE: the real check is on the server; this just gates UI
     setAuth(true)
   }, [])
 
@@ -21,8 +19,11 @@ export default function Admin() {
     const adminSecret = prompt("Confirm admin secret to save")
     const res = await fetch("/api/admin/upsert-work", {
       method: "POST",
-      headers: { "Content-Type": "application/json", "x-admin-secret": adminSecret ?? "" },
-      body: JSON.stringify({ slug, title, summary, bodyMdx })
+      headers: { 
+        "Content-Type": "application/json", 
+        "x-admin-secret": adminSecret ?? "" 
+      },
+      body: JSON.stringify({ slug, title, summary, bodyMdx, category })
     })
     alert(res.ok ? "Saved" : "Failed")
   }
@@ -36,6 +37,19 @@ export default function Admin() {
       <input className="border p-2 w-full rounded" value={title} onChange={e=>setTitle(e.target.value)} placeholder="title" />
       <textarea className="border p-2 w-full rounded" value={summary} onChange={e=>setSummary(e.target.value)} placeholder="summary" />
       <textarea className="border p-2 w-full rounded h-80 font-mono" value={bodyMdx} onChange={e=>setBodyMdx(e.target.value)} placeholder="MDX body" />
+      
+      {/* ✅ Category select */}
+      <select 
+        className="border p-2 w-full rounded" 
+        value={category} 
+        onChange={e=>setCategory(e.target.value as any)}
+      >
+        <option value="STORY">Story</option>
+        <option value="ESSAY">Essay</option>
+        <option value="CODE">Code</option>
+        <option value="RESULTS">Results</option>
+      </select>
+
       <button onClick={save} className="px-4 py-2 rounded bg-black text-white">Save</button>
     </div>
   )
