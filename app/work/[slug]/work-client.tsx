@@ -1,7 +1,6 @@
 'use client'
 import { useMemo, useRef, useState } from "react"
 import type { Work, Comment as Cmt, Highlight } from "@prisma/client"
-import { v4 as uuidv4 } from "uuid"
 
 type Props = { work: Work, comments: Cmt[], highlights: Highlight[] }
 
