@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
-import { prisma } from "@/src/server/prisma"
+import { prisma } from "@/server/prisma";
 import OpenAI from "openai"
 
 export async function POST(req: NextRequest) {
