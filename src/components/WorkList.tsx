@@ -6,11 +6,11 @@ export default async function WorkList({
   category,
   title,
 }: {
-  category: Work["category"]; // enum Category from schema
+  category: Work["category"];
   title: string;
 }) {
   const works = await prisma.work.findMany({
-    where: { category: { equals: category } }, // ✅ explicit equals
+    where: { category: { equals: category } }, // ✅ fixed
     orderBy: { createdAt: "desc" },
   });
 
@@ -18,7 +18,9 @@ export default async function WorkList({
     <div className="space-y-6">
       <h1 className="text-3xl font-bold">{title}</h1>
       {works.length === 0 ? (
-        <p className="text-zinc-600">No {String(category).toLowerCase()}s yet.</p>
+        <p className="text-zinc-600">
+          No {String(category).toLowerCase()}s yet.
+        </p>
       ) : (
         <ul className="space-y-3">
           {works.map((w) => (
