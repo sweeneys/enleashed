@@ -12,8 +12,8 @@ model Work {
   slug      String    @unique
   title     String
   summary   String?
-  category  Category  @default(ESSAY)   // ✅ new
-  bodyMdx   String    // MDX content split into block elements client-side
+  category  Category  @default(ESSAY)
+  bodyMdx   String
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   comments  Comment[]
@@ -57,5 +57,10 @@ enum Category {
   STORY
   ESSAY
   CODE
+  INTRO
+  BACKGROUND
+  METHODOLOGY
   RESULTS
+  DISCUSSION
 }
+
