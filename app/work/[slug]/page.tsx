@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';     // ✅ render on request
+
 import { notFound } from "next/navigation"
 import { prisma } from "@/server/prisma";
 import ClientWork from "./work-client"

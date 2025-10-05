@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';     // ✅ render on request
+
 import Link from "next/link"
 import { prisma } from "@/server/prisma";
 
