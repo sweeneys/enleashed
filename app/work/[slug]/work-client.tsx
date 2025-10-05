@@ -59,9 +59,14 @@ export default function ClientWork({ work, comments, highlights }: Props) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ workId: work.id, blockId, start, end, reaction })
     })
-    if (res.ok) setHs(prev => [await res.json(), ...prev])
-    else alert("Failed to save highlight")
+    if (res.ok) {
+      const saved = await res.json() // ✅ await here
+      setHs(prev => [saved, ...prev]) // ✅ updater remains sync
+    } else {
+      alert("Failed to save highlight")
+    }
   }
+
 
   function getSelectionWithin(el: HTMLElement) {
     const sel = window.getSelection()
