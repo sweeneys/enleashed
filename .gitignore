@@ -1,0 +1,23 @@
+# dependencies
+node_modules/
+
+# next.js
+.next/
+out/
+
+# env & local state
+.env
+.vercel/
+*.log
+
+# prisma (local SQLite files that may exist)
+prisma/dev.db
+prisma/dev.db-journal
+
+# tooling / caches / coverage
+.turbo/
+.cache/
+coverage/
+
+# OS
+.DS_Store
