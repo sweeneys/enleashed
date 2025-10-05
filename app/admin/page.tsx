@@ -7,12 +7,11 @@ export default function Admin() {
   const [title, setTitle] = useState("New Work Title")
   const [summary, setSummary] = useState("")
   const [bodyMdx, setBodyMdx] = useState("# Heading\n\nWrite MDX here.")
-  const [category, setCategory] = useState<"STORY"|"ESSAY"|"CODE"|"RESULTS">("ESSAY")
+  const [category, setCategory] = useState<"STORY"|"ESSAY"|"CODE"|"RESULTS">("ESSAY")  // ✅ here
 
   useEffect(() => {
     const token = prompt("Enter admin secret")
-    // NOTE: the real check is on the server; this just gates UI
-    setAuth(true)
+    setAuth(true) // real check is on the server
   }, [])
 
   async function save() {
@@ -23,7 +22,7 @@ export default function Admin() {
         "Content-Type": "application/json", 
         "x-admin-secret": adminSecret ?? "" 
       },
-      body: JSON.stringify({ slug, title, summary, bodyMdx, category })
+      body: JSON.stringify({ slug, title, summary, bodyMdx, category }) // ✅ include category
     })
     alert(res.ok ? "Saved" : "Failed")
   }
@@ -38,7 +37,7 @@ export default function Admin() {
       <textarea className="border p-2 w-full rounded" value={summary} onChange={e=>setSummary(e.target.value)} placeholder="summary" />
       <textarea className="border p-2 w-full rounded h-80 font-mono" value={bodyMdx} onChange={e=>setBodyMdx(e.target.value)} placeholder="MDX body" />
       
-      {/* ✅ Category select */}
+      {/* ✅ Category select field */}
       <select 
         className="border p-2 w-full rounded" 
         value={category} 
