@@ -1,67 +1,73 @@
 import "@/styles/globals.css";
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 
 export const metadata = {
   title: "Energy Unleashed",
   description:
     "PhD portfolio with inline highlights, comments, and AI feedback synthesis.",
+  icons: { icon: "/icon.png" }, // optional: add public/icon.png (512x512)
+  openGraph: {
+    title: "Energy Unleashed",
+    description:
+      "PhD portfolio with inline highlights, comments, and AI feedback synthesis.",
+    images: [{ url: "/hero.jpg", width: 1200, height: 630 }], // optional: add public/hero.jpg
+  },
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <body className="min-h-screen bg-white text-zinc-900">
-        <header className="border-b">
-          <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between gap-4">
+        <header className="border-b bg-white/70 backdrop-blur">
+          <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
+            {/* Brand */}
             <a href="/" className="flex items-center gap-3 font-semibold">
-              {/* Optional logo: place /public/logo.svg or /public/logo.png */}
               <img
-                src="/logo.svg"
+                src="/logo-mark.png"
                 alt="Energy Unleashed"
-                className="h-7 w-auto"
+                className="h-8 w-8 rounded-full object-cover ring-1 ring-black/10 shadow-sm"
                 onError={(e) => {
-                  // Hide the broken image icon if no logo is present yet
                   (e.currentTarget as HTMLImageElement).style.display = "none";
                 }}
               />
-              <span className="text-lg">Energy Unleashed</span>
+              <span className="text-lg tracking-tight">Energy Unleashed</span>
             </a>
 
-            <nav className="text-sm gap-5 hidden md:flex">
-              <a href="/about" className="underline">
-                About
-              </a>
-              <a href="/essays" className="underline">
-                Essays
-              </a>
-              <a href="/story" className="underline">
-                Story
-              </a>
-              <a href="/intro" className="underline">
-                Intro
-              </a>
-              <a href="/background" className="underline">
-                Background
-              </a>
-              <a href="/methodology" className="underline">
-                Methodology
-              </a>
-              <a href="/results" className="underline">
-                Results
-              </a>
-              <a href="/code" className="underline">
-                Code
-              </a>
-              <a href="/discussion" className="underline">
-                Discussion
-              </a>
+            {/* Nav */}
+            <nav className="hidden md:flex items-center gap-5 text-sm">
+              <a href="/about" className="hover:underline">About</a>
+              <a href="/essays" className="hover:underline">Essays</a>
+              <a href="/story" className="hover:underline">Story</a>
+              <a href="/intro" className="hover:underline">Intro</a>
+              <a href="/background" className="hover:underline">Background</a>
+              <a href="/methodology" className="hover:underline">Methodology</a>
+              <a href="/results" className="hover:underline">Results</a>
+              <a href="/code" className="hover:underline">Code</a>
+              <a href="/discussion" className="hover:underline">Discussion</a>
             </nav>
+
+            {/* UK flag pill */}
+            <a
+              href="/about"
+              className="flex items-center gap-2 rounded-full border px-3 py-1 text-xs shadow-sm hover:bg-zinc-50"
+              title="UK context"
+            >
+              <img
+                src="/uk.svg"
+                alt="United Kingdom"
+                className="h-3.5 w-5 rounded-[2px] object-cover"
+                onError={(e) => {
+                  (e.currentTarget as HTMLImageElement).style.display = "none";
+                }}
+              />
+              <span>UK</span>
+            </a>
           </div>
         </header>
 
         <main className="max-w-6xl mx-auto px-4 py-8">{children}</main>
 
-        {/* Floating Admin button (bottom-right) */}
+        {/* Floating Admin button */}
         <a
           href="/admin"
           className="fixed bottom-4 right-4 rounded-full shadow-lg bg-black text-white px-4 py-2 text-sm"
@@ -70,9 +76,21 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           Admin
         </a>
 
+        {/* Footer */}
         <footer className="border-t mt-16">
-          <div className="max-w-6xl mx-auto px-4 py-8 text-sm text-zinc-500">
-            © {new Date().getFullYear()} Your Name
+          <div className="max-w-6xl mx-auto px-4 py-8 text-sm text-zinc-500 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+            <div>
+              © {new Date().getFullYear()} Your Name · UK-based research
+            </div>
+            <div>
+              Contact:{" "}
+              <a
+                href="mailto:shaun@sweetech.co.uk"
+                className="underline hover:text-zinc-700"
+              >
+                shaun@sweetech.co.uk
+              </a>
+            </div>
           </div>
         </footer>
       </body>
