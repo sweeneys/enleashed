@@ -9,12 +9,15 @@ export async function GET(req: NextRequest) {
   if (!admin || admin !== process.env.ADMIN_SECRET) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
+
   const { searchParams } = new URL(req.url);
-  const slug = searchParams.get("slug") || "";
-  if (!slug) return NextResponse.json({ error: "Missing slug" }, { status: 400 });
+  const category = searchParams.get("category") || undefined;
 
-  const work = await prisma.work.findUnique({ where: { slug } });
-  if (!work) return NextResponse.json({ error: "Not found" }, { status: 404 });
+  const works = await prisma.work.findMany({
+    where: category ? { category: { equals: category as any } } : undefined,
+    select: { slug: true, title: true, category: true, updatedAt: true },
+    orderBy: [{ updatedAt: "desc" }],
+  });
 
-  return NextResponse.json(work);
+  return NextResponse.json(works);
 }
