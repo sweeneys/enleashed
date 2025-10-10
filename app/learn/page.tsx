@@ -1,31 +1,22 @@
 export const dynamic = 'force-dynamic';
 
-export default function LearnPage() {
-  return (
-    <div className="grid md:grid-cols-[220px_1fr] gap-6">
-      {/* Left nav */}
-      <aside className="md:sticky md:top-6 self-start border rounded-lg p-3">
-        <nav className="space-y-1 text-sm">
-          <a href="/essays" className="block px-2 py-1 rounded hover:bg-zinc-50">Essays</a>
-          <a href="/story" className="block px-2 py-1 rounded hover:bg-zinc-50">Stories</a>
-          <a href="/phd" className="block px-2 py-1 rounded hover:bg-zinc-50">PhD Chapters</a>
-          <a href="/course" className="block px-2 py-1 rounded hover:bg-zinc-50">Course</a>
-        </nav>
-      </aside>
+import Link from 'next/link';
 
-      {/* Intro copy */}
-      <section className="space-y-3">
-        <h1 className="text-3xl font-bold">Learn &amp; Critique</h1>
-        <p className="text-zinc-600">
-          Explore essays, stories, and PhD chapters. Use highlights and comments to give precise feedback.
-        </p>
-        <ul className="list-disc pl-6 text-zinc-700">
-          <li><a className="underline" href="/essays">Essays</a> — reflections, literature, arguments.</li>
-          <li><a className="underline" href="/story">Stories</a> — background, journey, motivations.</li>
-          <li><a className="underline" href="/phd">PhD Chapters</a> — Intro, Background, Methodology, Results, Code, Discussion.</li>
-          <li><a className="underline" href="/course">Course</a> — learning materials (coming soon).</li>
-        </ul>
-      </section>
-    </div>
+export default function Learn() {
+  return (
+    <main className="mx-auto max-w-6xl px-4 py-10">
+      <h1 className="text-3xl font-bold mb-6">Learn & Immerse</h1>
+      <p className="text-gray-700 mb-6">Dive deep, get context, and explore related work.</p>
+      <div className="grid md:grid-cols-2 gap-4">
+        <Link href="/learn/resources" className="block border rounded-2xl p-6 hover:bg-gray-50">
+          <div className="text-xl font-semibold mb-1">Resources</div>
+          <div className="text-gray-600">Reading lists, references, tools.</div>
+        </Link>
+        <Link href="/learn/friends" className="block border rounded-2xl p-6 hover:bg-gray-50">
+          <div className="text-xl font-semibold mb-1">Friends</div>
+          <div className="text-gray-600">Allies, collaborators, and inspirations.</div>
+        </Link>
+      </div>
+    </main>
   );
 }

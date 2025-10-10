@@ -2,6 +2,7 @@ export const dynamic = 'force-dynamic'; // ✅ render on request
 
 import Link from "next/link";
 import { prisma } from "@/server/prisma";
+import MissionSection from "@/components/MissionSection"; // ⬅️ NEW
 
 export default async function Home() {
   const works = await prisma.work.findMany({ orderBy: { createdAt: "desc" } });
@@ -29,7 +30,7 @@ export default async function Home() {
         </div>
       </div>
 
-      {/* Works list */}
+      {/* Latest Works */}
       <div className="space-y-6">
         <h2 className="text-2xl font-bold">Latest Works</h2>
         <p className="text-zinc-600">
@@ -56,12 +57,15 @@ export default async function Home() {
         </ul>
       </div>
 
+      {/* 🔽 NEW: Mission section with countdown + objectives */}
+      <MissionSection />
+
       {/* Contact */}
       <div className="border-t pt-6 text-sm text-zinc-600">
         <p>
           Contact:{" "}
           <a
-            href="mailto:shaun@sweetech.co.uk"
+            href="mailto:fight@enleashed.tech"
             className="underline hover:text-zinc-900"
           >
             shaun@sweetech.co.uk
