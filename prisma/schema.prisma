@@ -3,31 +3,31 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"          // ✅ change from "sqlite"
+  provider = "postgresql" // ✅ change from "sqlite"
   url      = env("DATABASE_URL")
 }
 
 model Work {
-  id        Int       @id @default(autoincrement())
-  slug      String    @unique
-  title     String
-  summary   String?
-  category  Category  @default(ESSAY)
-  bodyMdx   String
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  comments  Comment[]
+  id         Int               @id @default(autoincrement())
+  slug       String            @unique
+  title      String
+  summary    String?
+  category   Category          @default(ESSAY)
+  bodyMdx    String
+  createdAt  DateTime          @default(now())
+  updatedAt  DateTime          @updatedAt
+  comments   Comment[]
   highlights Highlight[]
-  summaries FeedbackSummary[]
+  summaries  FeedbackSummary[]
 }
 
 model Comment {
   id        Int      @id @default(autoincrement())
   workId    Int
-  blockId   String   // DOM block id (e.g., p-3)
-  start     Int      // start offset within block text
-  end       Int      // end offset within block text
-  text      String   // comment body
+  blockId   String // DOM block id (e.g., p-3)
+  start     Int // start offset within block text
+  end       Int // end offset within block text
+  text      String // comment body
   author    String?
   createdAt DateTime @default(now())
   work      Work     @relation(fields: [workId], references: [id], onDelete: Cascade)
@@ -39,7 +39,7 @@ model Highlight {
   blockId   String
   start     Int
   end       Int
-  reaction  String   // e.g., "love", "insightful", free text tag
+  reaction  String // e.g., "love", "insightful", free text tag
   createdAt DateTime @default(now())
   work      Work     @relation(fields: [workId], references: [id], onDelete: Cascade)
 }
@@ -47,8 +47,8 @@ model Highlight {
 model FeedbackSummary {
   id        Int      @id @default(autoincrement())
   workId    Int
-  period    String   // e.g., "rolling-7d"
-  content   String   // AI-generated synthesis markdown
+  period    String // e.g., "rolling-7d"
+  content   String // AI-generated synthesis markdown
   createdAt DateTime @default(now())
   work      Work     @relation(fields: [workId], references: [id], onDelete: Cascade)
 }
@@ -67,9 +67,44 @@ enum Category {
   FRIENDS
 }
 
-num ChiefRole {
-WARRIOR
-BUILDER
-INVIGILATOR
-TEACHER
+enum ChiefRole {
+  WARRIOR
+  BUILDER
+  INVIGILATOR
+  TEACHER
+}
+
+model ChiefApplication {
+  id               String    @id @default(cuid())
+  createdAt        DateTime  @default(now())
+  name             String
+  email            String
+  photoUrl         String? // store uploaded URL (S3/Cloudinary/etc.)
+  responsibilities String
+  pitch            String // "What makes you a good chief ...?"
+  role             ChiefRole
+  approved         Boolean   @default(false)
+
+  @@index([role, approved])
+}
+
+model Soldier {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  name      String
+  email     String
+  location  String?
+  country   String?
+  photoUrl  String?
+  supports  Boolean
+
+  @@index([supports])
+}
+
+model PlaylistSuggestion {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  name      String?
+  email     String?
+  url       String
 }
