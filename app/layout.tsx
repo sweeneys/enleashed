@@ -34,19 +34,19 @@ export default function RootLayout({ children }: { children: ReactNode }) {
               <span className="text-lg tracking-tight">Energy Unleashed</span>
             </a>
 
-            {/* Desktop nav - UPDATED */}
+            {/* Desktop nav — UPDATED */}
             <nav className="hidden md:flex items-center gap-5 text-sm">
-              <a href="/mission" className="hover:underline">Mission Control</a>
-              <a href="/learn" className="hover:underline">Learn &amp; Critique</a>
-              <a href="/support" className="hover:underline">Support &amp; Grow</a>
-              <a href="/build" className="hover:underline">Build</a>
-              <a href="/communicate" className="hover:underline">Communicate</a>
+              <a href="/mission-control" className="hover:underline">Mission Control</a>
+              <a href="/learn" className="hover:underline">Learn &amp; Immerse</a>
+              <a href="/challenge" className="hover:underline">Critique &amp; Challenge</a>
+              <a href="/build" className="hover:underline">Build &amp; Train</a>
+              <a href="/support-speak" className="hover:underline">Support &amp; Speak</a>
             </nav>
 
             {/* Right controls: UK pill + Mobile menu */}
             <div className="flex items-center gap-3">
               <a
-                href="/mission"
+                href="/mission-control"
                 className="hidden sm:flex items-center gap-2 rounded-full border px-3 py-1 text-xs shadow-sm hover:bg-zinc-50"
                 title="UK context"
               >
@@ -66,19 +66,19 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 
         <main className="max-w-6xl mx-auto px-4 py-8">{children}</main>
 
-      <footer className="border-t mt-16">
-        <div className="max-w-6xl mx-auto px-4 py-8 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-          <div className="text-sm text-zinc-500">
-            © {new Date().getFullYear()} Enleashed Ltd (All ownership shares to be handed over to UK Ltd whenever I figure out how to do that)
+        <footer className="border-t mt-16">
+          <div className="max-w-6xl mx-auto px-4 py-8 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+            <div className="text-sm text-zinc-500">
+              © {new Date().getFullYear()} Enleashed Ltd (All ownership shares to be handed over to UK Ltd whenever I figure out how to do that)
+            </div>
+            <div className="text-[20px]">
+              Contact:{" "}
+              <a href="mailto:fight@enleashed.tech" className="underline hover:text-zinc-700">
+                fight@enleashed.tech
+              </a>
+            </div>
           </div>
-          <div className="text-[20px]">
-            Contact:{" "}
-            <a href="mailto:fight@enleashed.tech" className="underline hover:text-zinc-700">
-              fight@enleashed.tech
-            </a>
-          </div>
-        </div>
-      </footer>
+        </footer>
       </body>
     </html>
   );

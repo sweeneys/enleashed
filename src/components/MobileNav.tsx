@@ -22,7 +22,7 @@ const items: Item[] = [
   },
   { label: 'Critique & Challenge', href: '/challenge' },
   { label: 'Build & Train', href: '/build' },
-  { label: 'Support & Speak', href: '/support-speak' }, // merged Support + Communicate
+  { label: 'Support & Speak', href: '/support-speak' },
 ];
 
 export default function MobileNav() {
@@ -31,13 +31,13 @@ export default function MobileNav() {
   const [expanded, setExpanded] = useState<Record<string, boolean>>({});
   const panelRef = useRef<HTMLDivElement>(null);
 
-  // Close on route change
+  // 🧭 close on route change
   useEffect(() => {
     setOpen(false);
     setExpanded({});
   }, [pathname]);
 
-  // Close on outside click
+  // 🖱 close when clicking outside
   useEffect(() => {
     function onClick(e: MouseEvent) {
       if (!open) return;
@@ -47,6 +47,23 @@ export default function MobileNav() {
     }
     window.addEventListener('click', onClick);
     return () => window.removeEventListener('click', onClick);
+  }, [open]);
+
+  // ⌨️ close on Escape key
+  useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      if (e.key === 'Escape') setOpen(false);
+    }
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, []);
+
+  // 🚫 prevent background scroll when open
+  useEffect(() => {
+    document.body.style.overflow = open ? 'hidden' : '';
+    return () => {
+      document.body.style.overflow = '';
+    };
   }, [open]);
 
   return (
@@ -92,7 +109,10 @@ export default function MobileNav() {
                       <div className="flex items-center">
                         <Link
                           href={item.href}
-                          className={`flex-1 px-2 py-3 ${isActive ? 'font-semibold' : ''}`}
+                          onClick={() => setOpen(false)}
+                          className={`flex-1 px-2 py-3 ${
+                            isActive ? 'font-semibold' : ''
+                          }`}
                         >
                           {item.label}
                         </Link>
@@ -102,7 +122,10 @@ export default function MobileNav() {
                             type="button"
                             aria-expanded={isExpanded || false}
                             onClick={() =>
-                              setExpanded((s) => ({ ...s, [item.href]: !s[item.href] }))
+                              setExpanded((s) => ({
+                                ...s,
+                                [item.href]: !s[item.href],
+                              }))
                             }
                             className="px-2 py-3 text-xs"
                           >
@@ -119,6 +142,7 @@ export default function MobileNav() {
                               <li key={ch.href}>
                                 <Link
                                   href={ch.href}
+                                  onClick={() => setOpen(false)}
                                   className={`block pl-5 pr-2 py-2 text-sm ${
                                     isChildActive ? 'font-semibold' : ''
                                   }`}
@@ -136,9 +160,8 @@ export default function MobileNav() {
               </ul>
             </nav>
 
-            {/* Footer actions (optional) */}
             <div className="pt-2 text-xs text-zinc-600">
-              <div>© {new Date().getFullYear()} Energy Unleashed</div>
+              <div>© {new Date().getFullYear()} Enleashed Ltd</div>
             </div>
           </div>
         </div>
