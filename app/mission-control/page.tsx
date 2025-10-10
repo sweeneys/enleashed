@@ -2,12 +2,12 @@
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
+import React from 'react';
 import { prisma } from '@/server/prisma';
 import ShareButtons from '@/components/ShareButtons';
 import { ChiefRole } from '@prisma/client';
 import ApplyButton from '@/components/mission/ApplyButton';
 import SoldierButton from '@/components/mission/SoldierButton';
-import React from 'react';
 
 // Simple server-side shuffle
 function shuffle<T>(arr: T[]): T[] {
@@ -90,7 +90,7 @@ export default async function MissionControlPage() {
                   </a>
                 </div>
               </div>
-              <ApplyButton role="WARRIOR" />
+              <ApplyButton role={ChiefRole.WARRIOR} />
             </div>
           }
         />
@@ -101,7 +101,7 @@ export default async function MissionControlPage() {
           role={ChiefRole.BUILDER}
           items={groupedChiefs.BUILDER}
           defaultIcon="/teacher.png" // temporary placeholder icon
-          afterTitle={<ApplyButton role="BUILDER" />}
+          afterTitle={<ApplyButton role={ChiefRole.BUILDER} />}
         />
 
         <TeamBlock
@@ -110,7 +110,7 @@ export default async function MissionControlPage() {
           role={ChiefRole.INVIGILATOR}
           items={groupedChiefs.INVIGILATOR}
           defaultIcon="/invigilator.png"
-          afterTitle={<ApplyButton role="INVIGILATOR" />}
+          afterTitle={<ApplyButton role={ChiefRole.INVIGILATOR} />}
         />
 
         <TeamBlock
@@ -119,7 +119,7 @@ export default async function MissionControlPage() {
           role={ChiefRole.TEACHER}
           items={groupedChiefs.TEACHER}
           defaultIcon="/teacher.png"
-          afterTitle={<ApplyButton role="TEACHER" />}
+          afterTitle={<ApplyButton role={ChiefRole.TEACHER} />}
         />
       </section>
 
@@ -135,6 +135,7 @@ export default async function MissionControlPage() {
               </p>
             </div>
           </div>
+          {/* CORPROL join uses the string, as before */}
           <ApplyButton role="CORPORAL" />
         </div>
 
@@ -212,19 +213,6 @@ export default async function MissionControlPage() {
             </a>
           </div>
         </div>
-
-        {/* Uncomment and set your channel ID to embed live stream */}
-        {/*
-        <div className="rounded-2xl overflow-hidden border aspect-video bg-black/5">
-          <iframe
-            className="w-full h-full"
-            src="https://www.youtube.com/embed/live_stream?channel=YOUR_CHANNEL_ID&rel=0"
-            title="Watch us work — YouTube Live"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowFullScreen
-          />
-        </div>
-        */}
       </section>
 
       {/* Support our work */}
@@ -273,9 +261,7 @@ export default async function MissionControlPage() {
                   type="button"
                   onClick={() => {
                     if (navigator.share) {
-                      navigator
-                        .share({ title: 'Enleashed', url: 'https://enleashed.tech' })
-                        .catch(() => {});
+                      navigator.share({ title: 'Enleashed', url: 'https://enleashed.tech' }).catch(() => {});
                     } else {
                       navigator.clipboard?.writeText('https://enleashed.tech');
                     }
@@ -292,7 +278,6 @@ export default async function MissionControlPage() {
                   Copy link
                 </button>
               </div>
-              {/* Keep your reusable component too */}
               <ShareButtons />
             </div>
 
@@ -353,9 +338,7 @@ export default async function MissionControlPage() {
                 type="button"
                 onClick={() => {
                   if (navigator.share) {
-                    navigator
-                      .share({ title: 'Enleashed', url: 'https://enleashed.tech' })
-                      .catch(() => {});
+                    navigator.share({ title: 'Enleashed', url: 'https://enleashed.tech' }).catch(() => {});
                   } else {
                     navigator.clipboard?.writeText('https://enleashed.tech');
                   }
@@ -391,7 +374,7 @@ export default async function MissionControlPage() {
 function TeamBlock({
   title,
   intro,
-  role,
+  role, // kept for parity; not used in this block
   items,
   defaultIcon,
   afterTitle,
@@ -399,7 +382,7 @@ function TeamBlock({
   title: string;
   intro: string;
   role: ChiefRole;
-  items: Array<{ id: string; name: string; photoUrl: string | null; responsibilities: string }>;
+  items: Array<{ id: string; name: string; photoUrl: string | null; responsibilities: string | null }>;
   defaultIcon: string;
   afterTitle?: React.ReactNode;
 }) {
@@ -426,7 +409,7 @@ function TeamBlock({
               name={c.name}
               photoUrl={c.photoUrl || defaultIcon}
               title="Approved Chief"
-              blurb={c.responsibilities}
+              blurb={c.responsibilities || undefined}
             />
           ))}
         </ul>
