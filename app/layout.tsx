@@ -66,17 +66,19 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 
         <main className="max-w-6xl mx-auto px-4 py-8">{children}</main>
 
-        <footer className="border-t mt-16">
-          <div className="max-w-6xl mx-auto px-4 py-8 text-sm text-zinc-500 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-            <div>© {new Date().getFullYear()} Your Name · UK-based research</div>
-            <div>
-              Contact:{" "}
-              <a href="mailto:fight@enleashed.tech" className="underline hover:text-zinc-700">
-                fight@enleashed.tech
-              </a>
-            </div>
+      <footer className="border-t mt-16">
+        <div className="max-w-6xl mx-auto px-4 py-8 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+          <div className="text-sm text-zinc-500">
+            © {new Date().getFullYear()} Enleashed Ltd (All ownership shares to be handed over to UK Ltd whenever I figure out how to do that)
           </div>
-        </footer>
+          <div className="text-[20px]">
+            Contact:{" "}
+            <a href="mailto:fight@enleashed.tech" className="underline hover:text-zinc-700">
+              fight@enleashed.tech
+            </a>
+          </div>
+        </div>
+      </footer>
       </body>
     </html>
   );

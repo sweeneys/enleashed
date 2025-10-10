@@ -20,7 +20,7 @@ export default async function Home() {
               Energy Unleashed
             </h1>
             <p className="text-sm md:text-base opacity-95">
-              March to fair electricity pricing to support democracy, decarbonisation and the economy
+              March to fair electricity pricing to support democracy, decarbonisation, society and the economy
             </p>
           </div>
         </div>
@@ -28,19 +28,6 @@ export default async function Home() {
 
       {/* The Mission (countdown + objectives + theme song + playlist) */}
       <MissionSection />
-
-      {/* Contact */}
-      <div className="border-t pt-6 text-sm text-zinc-600">
-        <p>
-          Contact:{" "}
-          <a
-            href="mailto:fight@enleashed.tech"
-            className="underline hover:text-zinc-900"
-          >
-            fight@enleashed.tech
-          </a>
-        </p>
-      </div>
     </div>
   );
 }
