@@ -7,13 +7,11 @@ import MobileNav from "@/components/MobileNav";
 
 export const metadata = {
   title: "Energy Unleashed",
-  description:
-    "PhD portfolio with inline highlights, comments, and AI feedback synthesis.",
+  description: "PhD portfolio with inline highlights, comments, and AI feedback synthesis.",
   icons: { icon: "/logo-mark.png" },
   openGraph: {
     title: "Energy Unleashed",
-    description:
-      "PhD portfolio with inline highlights, comments, and AI feedback synthesis.",
+    description: "PhD portfolio with inline highlights, comments, and AI feedback synthesis.",
     images: [{ url: "/hero.jpg", width: 1200, height: 630 }],
   },
 };
@@ -36,23 +34,19 @@ export default function RootLayout({ children }: { children: ReactNode }) {
               <span className="text-lg tracking-tight">Energy Unleashed</span>
             </a>
 
-            {/* Desktop nav */}
+            {/* Desktop nav - UPDATED */}
             <nav className="hidden md:flex items-center gap-5 text-sm">
-              <a href="/about" className="hover:underline">About</a>
-              <a href="/essays" className="hover:underline">Essays</a>
-              <a href="/story" className="hover:underline">Story</a>
-              <a href="/intro" className="hover:underline">Intro</a>
-              <a href="/background" className="hover:underline">Background</a>
-              <a href="/methodology" className="hover:underline">Methodology</a>
-              <a href="/results" className="hover:underline">Results</a>
-              <a href="/code" className="hover:underline">Code</a>
-              <a href="/discussion" className="hover:underline">Discussion</a>
+              <a href="/mission" className="hover:underline">Mission Control</a>
+              <a href="/learn" className="hover:underline">Learn &amp; Critique</a>
+              <a href="/support" className="hover:underline">Support &amp; Grow</a>
+              <a href="/build" className="hover:underline">Build</a>
+              <a href="/communicate" className="hover:underline">Communicate</a>
             </nav>
 
-            {/* Right controls: UK pill (hide on xs) + Mobile menu */}
+            {/* Right controls: UK pill + Mobile menu */}
             <div className="flex items-center gap-3">
               <a
-                href="/about"
+                href="/mission"
                 className="hidden sm:flex items-center gap-2 rounded-full border px-3 py-1 text-xs shadow-sm hover:bg-zinc-50"
                 title="UK context"
               >
@@ -65,8 +59,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                 />
                 <span>UK</span>
               </a>
-
-              {/* Hamburger + drawer (mobile only) */}
               <MobileNav />
             </div>
           </div>
@@ -74,22 +66,13 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 
         <main className="max-w-6xl mx-auto px-4 py-8">{children}</main>
 
-        {/* Floating Admin button (optional; MobileNav also links to Admin) */}
-        <a
-          href="/admin"
-          className="fixed bottom-4 right-4 rounded-full shadow-lg bg-black text-white px-4 py-2 text-sm"
-          title="Admin"
-        >
-          Admin
-        </a>
-
         <footer className="border-t mt-16">
           <div className="max-w-6xl mx-auto px-4 py-8 text-sm text-zinc-500 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
             <div>© {new Date().getFullYear()} Your Name · UK-based research</div>
             <div>
               Contact:{" "}
-              <a href="mailto:shaun@sweetech.co.uk" className="underline hover:text-zinc-700">
-                shaun@sweetech.co.uk
+              <a href="mailto:fight@enleashed.tech" className="underline hover:text-zinc-700">
+                fight@enleashed.tech
               </a>
             </div>
           </div>
