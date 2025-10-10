@@ -5,7 +5,6 @@ export const dynamic = 'force-dynamic';
 import React from 'react';
 import { prisma } from '@/server/prisma';
 import ShareButtons from '@/components/ShareButtons';
-import { ChiefRole } from '@prisma/client';
 import ApplyButton from '@/components/mission/ApplyButton';
 import SoldierButton from '@/components/mission/SoldierButton';
 
@@ -19,19 +18,68 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
+// Narrow role strings locally to avoid enum friction
+type ChiefRoleStr = 'WARRIOR' | 'BUILDER' | 'INVIGILATOR' | 'TEACHER';
+
 export default async function MissionControlPage() {
-  const [approvedChiefs, corporals, soldiersAll, soldierCount] = await Promise.all([
-    prisma.chiefApplication.findMany({
-      where: { approved: true },
-      orderBy: { createdAt: 'desc' },
-    }),
-    prisma.corporal.findMany({
-      where: { approved: true },
-      orderBy: { createdAt: 'desc' },
-    }),
-    prisma.soldier.findMany({ select: { id: true, name: true, photoUrl: true } }),
-    prisma.soldier.count(),
-  ]);
+  // Defensive fetch: never let a query crash the page
+  let approvedChiefs: Array<{
+    id: string;
+    name: string;
+    photoUrl: string | null;
+    responsibilities: string | null;
+    role: ChiefRoleStr;
+  }> = [];
+
+  let corporals: Array<{
+    id: string;
+    name: string;
+    photoUrl: string | null;
+    responsibilities: string | null;
+  }> = [];
+
+  let soldiersAll: Array<{ id: string; name: string; photoUrl: string | null }> = [];
+  let soldierCount = 0;
+
+  try {
+    const [chiefs, corps, soldiers, count] = await Promise.all([
+      prisma.chiefApplication.findMany({
+        where: { approved: true },
+        orderBy: { createdAt: 'desc' },
+        select: { id: true, name: true, photoUrl: true, responsibilities: true, role: true },
+      }),
+      prisma.corporal.findMany({
+        where: { approved: true },
+        orderBy: { createdAt: 'desc' },
+        select: { id: true, name: true, photoUrl: true, responsibilities: true },
+      }),
+      prisma.soldier.findMany({ select: { id: true, name: true, photoUrl: true } }),
+      prisma.soldier.count(),
+    ]);
+
+    // Coerce to the string union (guards in case Prisma type narrows differently)
+    approvedChiefs = chiefs.map((c) => ({
+      ...c,
+      role: String(c.role).toUpperCase() as ChiefRoleStr,
+      responsibilities: c.responsibilities ?? null,
+      photoUrl: c.photoUrl ?? null,
+    }));
+
+    corporals = corps.map((c) => ({
+      ...c,
+      responsibilities: c.responsibilities ?? null,
+      photoUrl: c.photoUrl ?? null,
+    }));
+
+    soldiersAll = soldiers.map((s) => ({ ...s, photoUrl: s.photoUrl ?? null }));
+    soldierCount = count ?? 0;
+  } catch {
+    // Fall back to empty UI; page should still render
+    approvedChiefs = [];
+    corporals = [];
+    soldiersAll = [];
+    soldierCount = 0;
+  }
 
   const soldiers = shuffle(soldiersAll).slice(0, 100);
 
@@ -71,7 +119,6 @@ export default async function MissionControlPage() {
         <TeamBlock
           title="Chief Warriors"
           intro="The warriors lead the soldiers in achieving the mission"
-          role={ChiefRole.WARRIOR}
           items={groupedChiefs.WARRIOR}
           defaultIcon="/chiefTruthSpeaker.png"
           afterTitle={
@@ -90,7 +137,7 @@ export default async function MissionControlPage() {
                   </a>
                 </div>
               </div>
-              <ApplyButton role={ChiefRole.WARRIOR} />
+              <ApplyButton role="WARRIOR" />
             </div>
           }
         />
@@ -98,28 +145,25 @@ export default async function MissionControlPage() {
         <TeamBlock
           title="Chief Builders"
           intro="The builders deliver the mission to MVP spec in close collaboration with the invigilators"
-          role={ChiefRole.BUILDER}
           items={groupedChiefs.BUILDER}
           defaultIcon="/teacher.png" // temporary placeholder icon
-          afterTitle={<ApplyButton role={ChiefRole.BUILDER} />}
+          afterTitle={<ApplyButton role="BUILDER" />}
         />
 
         <TeamBlock
           title="Chief Invigilators"
           intro="The invigilators ensure the correct mission is delivered through reviewing and critiquing the doctrine"
-          role={ChiefRole.INVIGILATOR}
           items={groupedChiefs.INVIGILATOR}
           defaultIcon="/invigilator.png"
-          afterTitle={<ApplyButton role={ChiefRole.INVIGILATOR} />}
+          afterTitle={<ApplyButton role="INVIGILATOR" />}
         />
 
         <TeamBlock
           title="Chief Teachers"
           intro="The teachers pass the word of the mission on to the common people to spread the word"
-          role={ChiefRole.TEACHER}
           items={groupedChiefs.TEACHER}
           defaultIcon="/teacher.png"
-          afterTitle={<ApplyButton role={ChiefRole.TEACHER} />}
+          afterTitle={<ApplyButton role="TEACHER" />}
         />
       </section>
 
@@ -135,7 +179,6 @@ export default async function MissionControlPage() {
               </p>
             </div>
           </div>
-          {/* CORPROL join uses the string, as before */}
           <ApplyButton role="CORPORAL" />
         </div>
 
@@ -182,12 +225,10 @@ export default async function MissionControlPage() {
           </ul>
         )}
 
-        {/* Motto — bigger */}
         <div className="text-center text-2xl font-semibold">
           United we stand, divided we fall 🫡
         </div>
 
-        {/* Enlist button (modal) */}
         <div className="text-center">
           <SoldierButton />
         </div>
@@ -197,11 +238,8 @@ export default async function MissionControlPage() {
       <section className="space-y-4">
         <h2 className="text-2xl font-semibold">Watch the leaders work</h2>
 
-        {/* Fallback card */}
         <div className="rounded-2xl border p-6 bg-gray-50">
-          <p className="text-gray-700">
-            Not online now. When live, the stream will appear here.
-          </p>
+          <p className="text-gray-700">Not online now. When live, the stream will appear here.</p>
           <div className="mt-3">
             <a
               href="https://www.youtube.com/@Enleashedtech/live"
@@ -260,10 +298,12 @@ export default async function MissionControlPage() {
                 <button
                   type="button"
                   onClick={() => {
-                    if (navigator.share) {
-                      navigator.share({ title: 'Enleashed', url: 'https://enleashed.tech' }).catch(() => {});
-                    } else {
-                      navigator.clipboard?.writeText('https://enleashed.tech');
+                    if (typeof navigator !== 'undefined' && (navigator as any).share) {
+                      (navigator as any)
+                        .share({ title: 'Enleashed', url: 'https://enleashed.tech' })
+                        .catch(() => {});
+                    } else if (typeof navigator !== 'undefined' && navigator.clipboard) {
+                      navigator.clipboard.writeText('https://enleashed.tech');
                     }
                   }}
                   className="inline-flex items-center rounded-xl border px-3 py-2 text-sm hover:bg-gray-100"
@@ -272,7 +312,11 @@ export default async function MissionControlPage() {
                 </button>
                 <button
                   type="button"
-                  onClick={() => navigator.clipboard?.writeText('https://enleashed.tech')}
+                  onClick={() => {
+                    if (typeof navigator !== 'undefined' && navigator.clipboard) {
+                      navigator.clipboard.writeText('https://enleashed.tech');
+                    }
+                  }}
                   className="inline-flex items-center rounded-xl border px-3 py-2 text-sm hover:bg-gray-100"
                 >
                   Copy link
@@ -337,10 +381,12 @@ export default async function MissionControlPage() {
               <button
                 type="button"
                 onClick={() => {
-                  if (navigator.share) {
-                    navigator.share({ title: 'Enleashed', url: 'https://enleashed.tech' }).catch(() => {});
-                  } else {
-                    navigator.clipboard?.writeText('https://enleashed.tech');
+                  if (typeof navigator !== 'undefined' && (navigator as any).share) {
+                    (navigator as any)
+                      .share({ title: 'Enleashed', url: 'https://enleashed.tech' })
+                      .catch(() => {});
+                  } else if (typeof navigator !== 'undefined' && navigator.clipboard) {
+                    navigator.clipboard.writeText('https://enleashed.tech');
                   }
                 }}
                 className="inline-flex items-center rounded-xl border px-3 py-2 text-sm hover:bg-gray-100"
@@ -349,7 +395,11 @@ export default async function MissionControlPage() {
               </button>
               <button
                 type="button"
-                onClick={() => navigator.clipboard?.writeText('https://enleashed.tech')}
+                onClick={() => {
+                  if (typeof navigator !== 'undefined' && navigator.clipboard) {
+                    navigator.clipboard.writeText('https://enleashed.tech');
+                  }
+                }}
                 className="inline-flex items-center rounded-xl border px-3 py-2 text-sm hover:bg-gray-100"
               >
                 Copy link
@@ -374,14 +424,12 @@ export default async function MissionControlPage() {
 function TeamBlock({
   title,
   intro,
-  role, // kept for parity; not used in this block
   items,
   defaultIcon,
   afterTitle,
 }: {
   title: string;
   intro: string;
-  role: ChiefRole;
   items: Array<{ id: string; name: string; photoUrl: string | null; responsibilities: string | null }>;
   defaultIcon: string;
   afterTitle?: React.ReactNode;
