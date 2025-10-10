@@ -34,7 +34,11 @@ export default function ApplyButton({ role }: { role: ChiefKey }) {
               </button>
             </div>
 
-            {role === 'CORPORAL' ? <CorporalForm /> : <ChiefForm role={role as Exclude<ChiefKey, 'CORPORAL'>} />}
+            {role === 'CORPORAL' ? (
+              <CorporalForm />
+            ) : (
+              <ChiefForm role={role as Exclude<ChiefKey, 'CORPORAL'>} />
+            )}
           </div>
         </div>
       )}
@@ -44,7 +48,7 @@ export default function ApplyButton({ role }: { role: ChiefKey }) {
 
 function ChiefForm({ role }: { role: 'WARRIOR' | 'BUILDER' | 'INVIGILATOR' | 'TEACHER' }) {
   return (
-    <form method="POST" action="/mission-control/apply" className="space-y-3">
+    <form method="POST" action="/mission-control/apply" className="space-y-3" onSubmit={() => { /* optional: show toast */ }}>
       <input type="hidden" name="role" value={role} />
       <Field label="Name"><input name="name" required className="mt-1 w-full border rounded-xl px-3 py-2" /></Field>
       <Field label="Email"><input name="email" type="email" required className="mt-1 w-full border rounded-xl px-3 py-2" /></Field>
@@ -58,7 +62,7 @@ function ChiefForm({ role }: { role: 'WARRIOR' | 'BUILDER' | 'INVIGILATOR' | 'TE
 
 function CorporalForm() {
   return (
-    <form method="POST" action="/mission-control/corporal/apply" className="space-y-3">
+    <form method="POST" action="/mission-control/corporal/apply" className="space-y-3" onSubmit={() => { /* optional: show toast */ }}>
       <Field label="Name"><input name="name" required className="mt-1 w-full border rounded-xl px-3 py-2" /></Field>
       <Field label="Email"><input name="email" type="email" required className="mt-1 w-full border rounded-xl px-3 py-2" /></Field>
       <Field label="Photo URL (optional)"><input name="photoUrl" type="url" className="mt-1 w-full border rounded-xl px-3 py-2" /></Field>

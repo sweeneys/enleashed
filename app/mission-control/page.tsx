@@ -1,9 +1,9 @@
 export const dynamic = 'force-dynamic';
 
 import { prisma } from '@/server/prisma';
-import MissionForms from './MissionForms';
 import ShareButtons from '@/components/ShareButtons';
 import { ChiefRole } from '@prisma/client';
+import ApplyButton from '@/components/mission/ApplyButton';
 
 // Simple server-side shuffle
 function shuffle<T>(arr: T[]): T[] {
@@ -73,6 +73,27 @@ export default async function MissionControlPage() {
           intro="The warriors lead the soldiers in achieving the mission"
           role={ChiefRole.WARRIOR}
           items={groupedChiefs.WARRIOR}
+          defaultIcon="/chiefTruthSpeaker.png"
+          showSectionIcon={false} // prevent duplicate image
+          afterTitle={
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-3">
+                <Avatar name="Chief Truth Speaker" photoUrl="/chiefTruthSpeaker.png" />
+                <div>
+                  <div className="font-semibold">Chief Truth Speaker</div>
+                  <a
+                    href="https://buymeacoffee.com/shaunsweeney"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-sm underline"
+                  >
+                    Support on Buy Me a Coffee
+                  </a>
+                </div>
+              </div>
+              <ApplyButton role="WARRIOR" />
+            </div>
+          }
         />
 
         <TeamBlock
@@ -80,6 +101,7 @@ export default async function MissionControlPage() {
           intro="The builders deliver the mission initially to MVP spec in close collaboration with the invigilators"
           role={ChiefRole.BUILDER}
           items={groupedChiefs.BUILDER}
+          defaultIcon="/teacher.png"
         />
 
         <TeamBlock
@@ -87,6 +109,7 @@ export default async function MissionControlPage() {
           intro="The invigilators ensure the correct mission is being delivered through reviewing and critiquing the proposed doctrine"
           role={ChiefRole.INVIGILATOR}
           items={groupedChiefs.INVIGILATOR}
+          defaultIcon="/invigilator.png"
         />
 
         <TeamBlock
@@ -94,6 +117,7 @@ export default async function MissionControlPage() {
           intro="The teachers pass the word of the mission on to the common people to spread the word"
           role={ChiefRole.TEACHER}
           items={groupedChiefs.TEACHER}
+          defaultIcon="/teacher.png"
         />
       </section>
 
@@ -106,19 +130,20 @@ export default async function MissionControlPage() {
               Corporals coordinate and rally soldiers, bridging leadership and the ranks.
             </p>
           </div>
-          <a
-            href="#apply-corporal"
-            className="inline-flex items-center rounded-xl border px-3 py-2 text-sm hover:bg-gray-50"
-          >
-            Apply to become a Corporal
-          </a>
+          <ApplyButton role="CORPORAL" />
         </div>
 
         {/* If none approved yet, show nothing — no empty message */}
         {corporals.length > 0 && (
           <ul className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
             {corporals.map((c) => (
-              <CardPerson key={c.id} name={c.name} photoUrl={c.photoUrl} title="Approved Corporal" blurb={c.responsibilities || ''} />
+              <CardPerson
+                key={c.id}
+                name={c.name}
+                photoUrl={c.photoUrl || '/corporal.png'}
+                title="Approved Corporal"
+                blurb={c.responsibilities || ''}
+              />
             ))}
           </ul>
         )}
@@ -150,14 +175,13 @@ export default async function MissionControlPage() {
         )}
 
         {/* Motto — larger */}
-        <div className="text-center text-xl font-semibold">United we stand, divided we fall 🫡</div>
+        <div className="text-center text-2xl font-semibold">United we stand, divided we fall 🫡</div>
       </section>
 
       {/* Watch the leaders work (YouTube Live / channel) */}
       <section className="space-y-4">
         <h2 className="text-2xl font-semibold">Watch the leaders work</h2>
         <div className="rounded-2xl overflow-hidden border aspect-video bg-black/5">
-          {/* Replace with your live stream URL or channel embed */}
           <iframe
             className="w-full h-full"
             src="https://www.youtube.com/embed/live_stream?channel=UC2rBbKaZtQ-dB-9dqD583Xg&autoplay=0&rel=0"
@@ -172,22 +196,168 @@ export default async function MissionControlPage() {
       </section>
 
       {/* Support our work */}
-      <section className="space-y-3">
-        <h2 className="text-2xl font-semibold">Support our work</h2>
+      <section className="space-y-4">
+        <h2 className="text-2xl font-semibold">Support our mission</h2>
         <ul className="list-disc pl-6 text-zinc-700 space-y-1">
           <li>Sign up for updates</li>
           <li>Share in your network</li>
-          <li>Buy me a coffee ☕</li>
+          <li>
+            <a href="https://buymeacoffee.com/shaunsweeney" target="_blank" rel="noreferrer" className="underline">
+              Buy me a coffee ☕
+            </a>
+          </li>
         </ul>
-        <ShareButtons />
-        <p className="text-zinc-700">
-          Media, talks, collaborations — email{' '}
-          <a className="underline" href="mailto:fight@enleashed.tech">fight@enleashed.tech</a>.
-        </p>
-      </section>
 
-      {/* Forms (Chiefs, Corporal, Soldier) */}
-      <MissionForms />
+        {/* Share row */}
+        <div className="flex flex-wrap gap-2">
+          <a
+            className="inline-flex items-center rounded-xl border px-3 py-2 text-sm hover:bg-gray-50"
+            target="_blank" rel="noreferrer"
+            href={`https://twitter.com/intent/tweet?text=${encodeURIComponent('Energy Unleashed — fair electricity pricing for democracy, decarbonisation and the economy')}&url=${encodeURIComponent('https://www.enleashed.tech/')}`}
+          >
+            Share on X
+          </a>
+
+          <a
+            className="inline-flex items-center rounded-xl border px-3 py-2 text-sm hover:bg-gray-50"
+            target="_blank" rel="noreferrer"
+            href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent('https://www.enleashed.tech/')}`}
+          >
+            Share on LinkedIn
+          </a>
+
+          <button
+            className="inline-flex items-center rounded-xl border px-3 py-2 text-sm hover:bg-gray-50"
+            onClick={async () => {
+              if ((navigator as any).share) {
+                try {
+                  await (navigator as any).share({ title: 'Energy Unleashed', url: 'https://www.enleashed.tech/' });
+                } catch {}
+              } else {
+                try {
+                  await navigator.clipboard.writeText('https://www.enleashed.tech/');
+                  alert('Link copied!');
+                } catch {}
+              }
+            }}
+          >
+            Share…
+          </button>
+
+          <button
+            className="inline-flex items-center rounded-xl border px-3 py-2 text-sm hover:bg-gray-50"
+            onClick={async () => {
+              try {
+                await navigator.clipboard.writeText('https://www.enleashed.tech/');
+                alert('Link copied!');
+              } catch {}
+            }}
+          >
+            Copy link
+          </button>
+        </div>
+
+        {/* Critique & Challenge */}
+        <div className="space-y-1">
+          <h3 className="text-xl font-semibold">Critique &amp; Challenge</h3>
+          <p className="text-zinc-700">
+            Use highlights, comments, and open discussion to ensure the solution remains inclusive,
+            transparent, and representative of the people it serves.
+          </p>
+        </div>
+
+        {/* Help build the solution */}
+        <div className="space-y-1">
+          <h3 className="text-xl font-semibold">Help build the solution</h3>
+          <p className="text-zinc-700">
+            Are you a builder, designer, or data scientist who wants to help shape the platform?
+            Get in touch by email: <a className="underline" href="mailto:fight@enleashed.tech">fight@enleashed.tech</a>
+          </p>
+        </div>
+
+        {/* Enable delivery */}
+        <div className="space-y-1">
+          <h3 className="text-xl font-semibold">Enable delivery</h3>
+          <p className="text-zinc-700">
+            We’re seeking collaboration with partners, funders, civic institutions, and innovators.
+            Together we can build the frameworks that let this mission thrive.
+          </p>
+        </div>
+
+        {/* Work in your community */}
+        <div className="space-y-1">
+          <h3 className="text-xl font-semibold">Work in your community</h3>
+          <p className="text-zinc-700">
+            Be the change you wish to see in the world — launch sustainability initiatives,
+            share learning materials, and bring people together around practical energy solutions.
+          </p>
+        </div>
+
+        {/* Spread the word */}
+        <div className="space-y-2">
+          <h3 className="text-xl font-semibold">Spread the word</h3>
+          <p className="text-zinc-700">
+            Share this project widely. The more people know, the stronger the movement becomes.
+          </p>
+
+          <div className="flex flex-wrap gap-2">
+            <a
+              className="inline-flex items-center rounded-xl border px-3 py-2 text-sm hover:bg-gray-50"
+              target="_blank" rel="noreferrer"
+              href={`https://twitter.com/intent/tweet?text=${encodeURIComponent('Energy Unleashed — fair electricity pricing for democracy, decarbonisation and the economy')}&url=${encodeURIComponent('https://www.enleashed.tech/')}`}
+            >
+              Share on X
+            </a>
+
+            <a
+              className="inline-flex items-center rounded-xl border px-3 py-2 text-sm hover:bg-gray-50"
+              target="_blank" rel="noreferrer"
+              href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent('https://www.enleashed.tech/')}`}
+            >
+              Share on LinkedIn
+            </a>
+
+            <button
+              className="inline-flex items-center rounded-xl border px-3 py-2 text-sm hover:bg-gray-50"
+              onClick={async () => {
+                if ((navigator as any).share) {
+                  try {
+                    await (navigator as any).share({ title: 'Energy Unleashed', url: 'https://www.enleashed.tech/' });
+                  } catch {}
+                } else {
+                  try {
+                    await navigator.clipboard.writeText('https://www.enleashed.tech/');
+                    alert('Link copied!');
+                  } catch {}
+                }
+              }}
+            >
+              Share…
+            </button>
+
+            <button
+              className="inline-flex items-center rounded-xl border px-3 py-2 text-sm hover:bg-gray-50"
+              onClick={async () => {
+                try {
+                  await navigator.clipboard.writeText('https://www.enleashed.tech/');
+                  alert('Link copied!');
+                } catch {}
+              }}
+            >
+              Copy link
+            </button>
+          </div>
+        </div>
+
+        {/* Speak & Communicate */}
+        <div className="space-y-1">
+          <h3 className="text-xl font-semibold">Speak &amp; Communicate</h3>
+          <p className="text-zinc-700">
+            For media, talks, and outreach opportunities, please reach out directly at{' '}
+            <a className="underline" href="mailto:fight@enleashed.tech">fight@enleashed.tech</a>.
+          </p>
+        </div>
+      </section>
     </main>
   );
 }
@@ -197,31 +367,30 @@ function TeamBlock({
   intro,
   role,
   items,
+  defaultIcon,
+  afterTitle,
+  showSectionIcon = true,
 }: {
   title: string;
   intro: string;
   role: ChiefRole;
-  items: Array<{
-    id: string;
-    name: string;
-    photoUrl: string | null;
-    responsibilities: string;
-  }>;
+  items: Array<{ id: string; name: string; photoUrl: string | null; responsibilities: string }>;
+  defaultIcon: string;
+  afterTitle?: React.ReactNode;
+  showSectionIcon?: boolean;
 }) {
   const hasItems = items.length > 0;
   return (
     <div className="space-y-3">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
         <div>
           <h3 className="text-xl font-semibold">{title}</h3>
           <p className="text-gray-600">{intro}</p>
         </div>
-        <a
-          href={`#apply-${String(role).toLowerCase()}`}
-          className="inline-flex items-center rounded-xl border px-3 py-2 text-sm hover:bg-gray-50"
-        >
-          Apply to become a {title.replace('Chief ', 'Chief ')}
-        </a>
+        <div className="flex items-center gap-4">
+          {showSectionIcon && <Avatar name={title} photoUrl={defaultIcon} />}
+          {afterTitle}
+        </div>
       </div>
 
       {hasItems && (
@@ -230,12 +399,18 @@ function TeamBlock({
             <CardPerson
               key={c.id}
               name={c.name}
-              photoUrl={c.photoUrl}
+              photoUrl={c.photoUrl || defaultIcon}
               title="Approved Chief"
               blurb={c.responsibilities}
             />
           ))}
         </ul>
+      )}
+
+      {!hasItems && (
+        <div className="text-sm text-gray-600 flex items-center gap-3">
+          <span>First appointments coming soon.</span>
+        </div>
       )}
     </div>
   );
