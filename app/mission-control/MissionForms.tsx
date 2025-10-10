@@ -2,10 +2,11 @@
 
 import { useState } from 'react';
 
+type ChiefRoleKey = 'WARRIOR' | 'BUILDER' | 'INVIGILATOR' | 'TEACHER';
+type PanelKey = ChiefRoleKey | 'CORPORAL' | 'SOLDIER' | null;
+
 export default function MissionForms() {
-  const [open, setOpen] = useState<
-    'WARRIOR' | 'BUILDER' | 'INVIGILATOR' | 'TEACHER' | 'CORPORAL' | 'SOLDIER' | null
-  >(null);
+  const [open, setOpen] = useState<PanelKey>(null);
 
   return (
     <section className="space-y-10">
@@ -13,7 +14,7 @@ export default function MissionForms() {
 
       {/* Chiefs */}
       <div className="grid md:grid-cols-2 gap-6">
-        {(['WARRIOR', 'BUILDER', 'INVIGILATOR', 'TEACHER'] as const).map((role) => (
+        {(['WARRIOR', 'BUILDER', 'INVIGILATOR', 'TEACHER'] as ChiefRoleKey[]).map((role) => (
           <div key={role} id={`apply-${role.toLowerCase()}`} className="border rounded-2xl p-5">
             <div className="flex items-center justify-between">
               <div className="font-semibold">
@@ -46,7 +47,7 @@ export default function MissionForms() {
       </div>
 
       {/* Soldiers */}
-      <div className="border rounded-2xl p-5">
+      <div id="apply-soldier" className="border rounded-2xl p-5">
         <div className="flex items-center justify-between">
           <div className="font-semibold">Become a Foot Soldier</div>
           <button
@@ -62,11 +63,7 @@ export default function MissionForms() {
   );
 }
 
-function ChiefForm({
-  role,
-}: {
-  role: 'WARRIOR' | 'BUILDER' | 'INVIGILATOR' | 'TEACHER';
-}) {
+function ChiefForm({ role }: { role: ChiefRoleKey }) {
   return (
     <form method="POST" action="/mission-control/apply" className="mt-4 space-y-3">
       <input type="hidden" name="role" value={role} />
@@ -158,4 +155,32 @@ function SoldierForm() {
 
         <label className="block">
           <span className="text-sm">Country</span>
-          <input name="country" className="mt-1 w-f
+          <input name="country" className="mt-1 w-full border rounded-xl px-3 py-2" list="country-list" />
+          <datalist id="country-list">
+            <option>United Kingdom</option>
+            <option>Ireland</option>
+            <option>United States</option>
+            <option>Canada</option>
+            <option>Australia</option>
+          </datalist>
+        </label>
+      </div>
+
+      <label className="flex items-center gap-2">
+        <input type="checkbox" name="supports" value="yes" />
+        <span>Do you support the mission soldier🫡?</span>
+      </label>
+
+      <label className="block">
+        <span className="text-sm">Photo URL (optional)</span>
+        <input name="photoUrl" type="url" placeholder="https://..." className="mt-1 w-full border rounded-xl px-3 py-2" />
+      </label>
+
+      <div className="flex items-center justify-end gap-2">
+        <button type="submit" className="px-3 py-2 text-sm rounded-xl border bg-gray-900 text-white">
+          Enlist
+        </button>
+      </div>
+    </form>
+  );
+}
