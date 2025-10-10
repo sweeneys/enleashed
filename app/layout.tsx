@@ -3,6 +3,7 @@ export const dynamic = 'force-dynamic';
 import "@/styles/globals.css";
 import type { ReactNode } from "react";
 import Image from "next/image";
+import MobileNav from "@/components/MobileNav";
 
 export const metadata = {
   title: "Energy Unleashed",
@@ -35,7 +36,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
               <span className="text-lg tracking-tight">Energy Unleashed</span>
             </a>
 
-            {/* Nav */}
+            {/* Desktop nav */}
             <nav className="hidden md:flex items-center gap-5 text-sm">
               <a href="/about" className="hover:underline">About</a>
               <a href="/essays" className="hover:underline">Essays</a>
@@ -48,27 +49,32 @@ export default function RootLayout({ children }: { children: ReactNode }) {
               <a href="/discussion" className="hover:underline">Discussion</a>
             </nav>
 
-            {/* UK flag pill */}
-            <a
-              href="/about"
-              className="flex items-center gap-2 rounded-full border px-3 py-1 text-xs shadow-sm hover:bg-zinc-50"
-              title="UK context"
-            >
-              <Image
-                src="/flag.png"
-                alt="United Kingdom"
-                width={20}
-                height={14}
-                className="h-3.5 w-5 rounded-[2px] object-cover"
-              />
-              <span>UK</span>
-            </a>
+            {/* Right controls: UK pill (hide on xs) + Mobile menu */}
+            <div className="flex items-center gap-3">
+              <a
+                href="/about"
+                className="hidden sm:flex items-center gap-2 rounded-full border px-3 py-1 text-xs shadow-sm hover:bg-zinc-50"
+                title="UK context"
+              >
+                <Image
+                  src="/flag.png"
+                  alt="United Kingdom"
+                  width={20}
+                  height={14}
+                  className="h-3.5 w-5 rounded-[2px] object-cover"
+                />
+                <span>UK</span>
+              </a>
+
+              {/* Hamburger + drawer (mobile only) */}
+              <MobileNav />
+            </div>
           </div>
         </header>
 
         <main className="max-w-6xl mx-auto px-4 py-8">{children}</main>
 
-        {/* Floating Admin button */}
+        {/* Floating Admin button (optional; MobileNav also links to Admin) */}
         <a
           href="/admin"
           className="fixed bottom-4 right-4 rounded-full shadow-lg bg-black text-white px-4 py-2 text-sm"
@@ -77,18 +83,12 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           Admin
         </a>
 
-        {/* Footer */}
         <footer className="border-t mt-16">
           <div className="max-w-6xl mx-auto px-4 py-8 text-sm text-zinc-500 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-            <div>
-              © {new Date().getFullYear()} Your Name · UK-based research
-            </div>
+            <div>© {new Date().getFullYear()} Your Name · UK-based research</div>
             <div>
               Contact:{" "}
-              <a
-                href="mailto:shaun@sweetech.co.uk"
-                className="underline hover:text-zinc-700"
-              >
+              <a href="mailto:shaun@sweetech.co.uk" className="underline hover:text-zinc-700">
                 shaun@sweetech.co.uk
               </a>
             </div>
