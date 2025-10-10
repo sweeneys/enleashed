@@ -1,80 +1,148 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { useEffect, useRef, useState } from 'react';
 
-const links = [
-  { href: "/mission",      label: "Mission Control" },
-  { href: "/learn",        label: "Learn & Critique" },
-  { href: "/support",      label: "Support & Grow" },
-  { href: "/build",        label: "Build" },
-  { href: "/communicate",  label: "Communicate" },
-  { href: "/admin",        label: "Admin" }, // visible only via menu now
+type Item = {
+  label: string;
+  href: string;
+  children?: { label: string; href: string }[];
+};
+
+const items: Item[] = [
+  { label: 'Mission Control', href: '/mission-control' },
+  {
+    label: 'Learn & Immerse',
+    href: '/learn',
+    children: [
+      { label: 'Resources', href: '/learn/resources' },
+      { label: 'Friends', href: '/learn/friends' },
+    ],
+  },
+  { label: 'Critique & Challenge', href: '/challenge' },
+  { label: 'Build & Train', href: '/build' },
+  { label: 'Support & Speak', href: '/support-speak' }, // merged Support + Communicate
 ];
 
 export default function MobileNav() {
+  const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const [expanded, setExpanded] = useState<Record<string, boolean>>({});
+  const panelRef = useRef<HTMLDivElement>(null);
 
-  // prevent background scroll when menu open
+  // Close on route change
   useEffect(() => {
-    if (open) document.body.style.overflow = "hidden";
-    else document.body.style.overflow = "";
-    return () => { document.body.style.overflow = ""; };
+    setOpen(false);
+    setExpanded({});
+  }, [pathname]);
+
+  // Close on outside click
+  useEffect(() => {
+    function onClick(e: MouseEvent) {
+      if (!open) return;
+      if (panelRef.current && !panelRef.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    }
+    window.addEventListener('click', onClick);
+    return () => window.removeEventListener('click', onClick);
   }, [open]);
 
   return (
-    <>
-      {/* Hamburger button */}
+    <div className="md:hidden">
+      {/* Toggle button */}
       <button
+        type="button"
         aria-label="Open menu"
         aria-expanded={open}
-        className="md:hidden inline-flex items-center justify-center rounded-md border px-3 py-2 text-sm"
-        onClick={() => setOpen(true)}
+        onClick={() => setOpen((v) => !v)}
+        className="inline-flex items-center gap-2 border rounded-xl px-3 py-2"
       >
-        <span className="sr-only">Open menu</span>
-        <span className="inline-block w-5 h-0.5 bg-black mb-1" />
-        <span className="inline-block w-5 h-0.5 bg-black mb-1" />
-        <span className="inline-block w-5 h-0.5 bg-black" />
+        <span>Menu</span>
       </button>
 
       {/* Drawer */}
       {open && (
-        <>
-          <button
-            aria-label="Close menu"
-            className="fixed inset-0 bg-black/40 z-40 md:hidden"
-            onClick={() => setOpen(false)}
-          />
-          <nav
-            className="fixed top-0 right-0 h-full w-80 max-w-[85vw] bg-white z-50 shadow-2xl md:hidden flex flex-col"
-            role="dialog"
-            aria-modal="true"
+        <div className="fixed inset-0 z-50 bg-black/30">
+          <div
+            ref={panelRef}
+            className="ml-auto h-full w-[85%] max-w-sm bg-white shadow-xl p-4 flex flex-col gap-2"
           >
-            <div className="flex items-center justify-between px-4 py-3 border-b">
-              <span className="font-semibold">Menu</span>
+            <div className="flex items-center justify-between mb-2">
+              <div className="text-sm font-semibold">Navigation</div>
               <button
-                className="rounded-md border px-2 py-1 text-sm"
                 onClick={() => setOpen(false)}
-                aria-label="Close"
+                className="rounded-lg border px-2 py-1 text-sm"
+                aria-label="Close menu"
               >
                 Close
               </button>
             </div>
 
-            <div className="p-2 overflow-y-auto">
-              {links.map((l) => (
-                <a
-                  key={l.href}
-                  href={l.href}
-                  className="block px-3 py-3 rounded-md text-base hover:bg-zinc-50"
-                  onClick={() => setOpen(false)}
-                >
-                  {l.label}
-                </a>
-              ))}
+            <nav className="flex-1 overflow-y-auto">
+              <ul className="flex flex-col">
+                {items.map((item) => {
+                  const isActive = pathname === item.href;
+                  const hasChildren = !!item.children?.length;
+                  const isExpanded = expanded[item.href];
+
+                  return (
+                    <li key={item.href} className="border-b">
+                      <div className="flex items-center">
+                        <Link
+                          href={item.href}
+                          className={`flex-1 px-2 py-3 ${isActive ? 'font-semibold' : ''}`}
+                        >
+                          {item.label}
+                        </Link>
+
+                        {hasChildren && (
+                          <button
+                            type="button"
+                            aria-expanded={isExpanded || false}
+                            onClick={() =>
+                              setExpanded((s) => ({ ...s, [item.href]: !s[item.href] }))
+                            }
+                            className="px-2 py-3 text-xs"
+                          >
+                            {isExpanded ? '−' : '+'}
+                          </button>
+                        )}
+                      </div>
+
+                      {hasChildren && isExpanded && (
+                        <ul className="bg-gray-50">
+                          {item.children!.map((ch) => {
+                            const isChildActive = pathname === ch.href;
+                            return (
+                              <li key={ch.href}>
+                                <Link
+                                  href={ch.href}
+                                  className={`block pl-5 pr-2 py-2 text-sm ${
+                                    isChildActive ? 'font-semibold' : ''
+                                  }`}
+                                >
+                                  {ch.label}
+                                </Link>
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      )}
+                    </li>
+                  );
+                })}
+              </ul>
+            </nav>
+
+            {/* Footer actions (optional) */}
+            <div className="pt-2 text-xs text-zinc-600">
+              <div>© {new Date().getFullYear()} Energy Unleashed</div>
             </div>
-          </nav>
-        </>
+          </div>
+        </div>
       )}
-    </>
+    </div>
   );
 }

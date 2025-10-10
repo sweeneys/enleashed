@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 
-// ✅ Define your nav model here
 const navItems = [
   { label: 'Home', href: '/' },
   {
@@ -16,7 +15,8 @@ const navItems = [
     ],
   },
   { label: 'Critique & Challenge', href: '/challenge' },
-  { label: 'Mission Control', href: '/mission-control' }, // optional quick link
+  { label: 'Build & Train', href: '/build' }, // 🆕 renamed
+  { label: 'Mission Control', href: '/mission-control' },
   { label: 'Contact', href: '/contact' },
 ];
 
