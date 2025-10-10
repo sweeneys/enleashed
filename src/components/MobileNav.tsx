@@ -17,11 +17,24 @@ const items: Item[] = [
     href: '/learn',
     children: [
       { label: 'Resources', href: '/learn/resources' },
-      { label: 'Friends', href: '/learn/friends' },
+      // Friends moved below to Allies & Partners
     ],
   },
   { label: 'Critique & Challenge', href: '/challenge' },
   { label: 'Build & Train', href: '/build' },
+  { label: 'Ideas & Synthesis', href: '/ideas' },
+  {
+    label: 'Allies & Partners',
+    href: '/allies',
+    children: [
+      { label: 'Allies', href: '/allies' },
+      { label: 'Partners', href: '/allies/partners' },
+      { label: 'Energy Suppliers', href: '/allies/energy-suppliers' },
+      { label: 'Energy Generators', href: '/allies/energy-generators' },
+      { label: 'Distribution System Operators', href: '/allies/dsos' },
+      { label: 'Community Energy Groups', href: '/allies/community' },
+    ],
+  },
   { label: 'Support & Speak', href: '/support-speak' },
 ];
 
@@ -31,13 +44,13 @@ export default function MobileNav() {
   const [expanded, setExpanded] = useState<Record<string, boolean>>({});
   const panelRef = useRef<HTMLDivElement>(null);
 
-  // 🧭 close on route change
+  // close on route change
   useEffect(() => {
     setOpen(false);
     setExpanded({});
   }, [pathname]);
 
-  // 🖱 close when clicking outside
+  // close when clicking outside
   useEffect(() => {
     function onClick(e: MouseEvent) {
       if (!open) return;
@@ -49,7 +62,7 @@ export default function MobileNav() {
     return () => window.removeEventListener('click', onClick);
   }, [open]);
 
-  // ⌨️ close on Escape key
+  // close on Escape key
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
       if (e.key === 'Escape') setOpen(false);
@@ -58,7 +71,7 @@ export default function MobileNav() {
     return () => window.removeEventListener('keydown', onKey);
   }, []);
 
-  // 🚫 prevent background scroll when open
+  // prevent background scroll
   useEffect(() => {
     document.body.style.overflow = open ? 'hidden' : '';
     return () => {

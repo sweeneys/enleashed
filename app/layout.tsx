@@ -40,8 +40,11 @@ export default function RootLayout({ children }: { children: ReactNode }) {
               <a href="/learn" className="hover:underline">Learn &amp; Immerse</a>
               <a href="/challenge" className="hover:underline">Critique &amp; Challenge</a>
               <a href="/build" className="hover:underline">Build &amp; Train</a>
+              <a href="/ideas" className="hover:underline">Ideas &amp; Synthesis</a> {/* NEW */}
+              <a href="/allies" className="hover:underline">Allies &amp; Partners</a>
               <a href="/support-speak" className="hover:underline">Support &amp; Speak</a>
             </nav>
+
 
             {/* Right controls: UK pill + Mobile menu */}
             <div className="flex items-center gap-3">
