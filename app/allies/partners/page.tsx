@@ -1,24 +1,33 @@
 export const dynamic = 'force-dynamic';
 
-const partners = [
-  // add strings for now; later upgrade to a model
-  // "Example Partner A",
-  // "Example Partner B",
+type Partner = {
+  name: string;
+  url?: string;
+  logoSrc?: string;
+  blurb?: string;
+};
+
+const partners: Partner[] = [
+  // { name: "Example Partner A", url: "https://example.com" },
 ];
 
 export default function PartnersPage() {
   return (
-    <main className="mx-auto max-w-6xl px-4 py-10 space-y-4">
-      <h1 className="text-3xl font-bold">Partners</h1>
-      <p className="text-zinc-700">Delivery partners collaborating on research, product, policy, and community programmes.</p>
-
-      {partners.length === 0 ? (
-        <p className="text-zinc-600">Partner listings coming soon.</p>
-      ) : (
-        <ul className="list-disc pl-6 space-y-1">
-          {partners.map((p) => (<li key={p}>{p}</li>))}
-        </ul>
-      )}
+    <main className="p-6">
+      <h1 className="text-2xl font-semibold mb-4">Allies & Partners</h1>
+      <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {partners.map(({ name, url, blurb }) => (
+          <li key={name} className="p-4 rounded-lg border">
+            <div className="font-medium">{name}</div>
+            {blurb && <p className="text-sm mt-1">{blurb}</p>}
+            {url && (
+              <a href={url} className="text-sm underline mt-2 inline-block">
+                Visit
+              </a>
+            )}
+          </li>
+        ))}
+      </ul>
     </main>
   );
 }
