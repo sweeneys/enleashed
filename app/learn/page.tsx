@@ -11,10 +11,6 @@ return (
 <div className="text-xl font-semibold mb-1">Resources</div>
 <div className="text-gray-600">Reading lists, references, tools.</div>
 </Link>
-<Link href="/learn/friends" className="block border rounded-2xl p-6 hover:bg-gray-50">
-<div className="text-xl font-semibold mb-1">Friends</div>
-<div className="text-gray-600">Allies, collaborators, and inspirations.</div>
-</Link>
 </div>
 </main>
 )
