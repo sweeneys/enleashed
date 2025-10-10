@@ -108,3 +108,13 @@ model PlaylistSuggestion {
   email     String?
   url       String
 }
+
+model Corporal {
+  id               String   @id @default(cuid())
+  createdAt        DateTime @default(now())
+  name             String
+  email            String
+  photoUrl         String?
+  responsibilities String?
+  approved         Boolean  @default(false)
+}

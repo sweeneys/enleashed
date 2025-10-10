@@ -15,15 +15,11 @@ function shuffle<T>(arr: T[]): T[] {
 }
 
 export default async function MissionControlPage() {
-  const [approvedChiefs, soldiersAll, soldierCount] = await Promise.all([
-    prisma.chiefApplication.findMany({
-      where: { approved: true },
-      orderBy: { createdAt: 'desc' },
-    }),
-    prisma.soldier.findMany({
-      select: { id: true, name: true, photoUrl: true },
-    }),
+  const [approvedChiefs, soldiersAll, soldierCount, corporals] = await Promise.all([
+    prisma.chiefApplication.findMany({ where: { approved: true }, orderBy: { createdAt: 'desc' } }),
+    prisma.soldier.findMany({ select: { id: true, name: true, photoUrl: true } }),
     prisma.soldier.count(),
+    prisma.corporal.findMany({ where: { approved: true }, orderBy: { createdAt: 'desc' } }),
   ]);
 
   // Show up to 100 random soldiers
@@ -73,6 +69,51 @@ export default async function MissionControlPage() {
         />
       </section>
 
+            {/* Corporals */}
+      <section className="space-y-4">
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="text-2xl font-semibold">Corporals</h2>
+            <p className="text-gray-600">
+              Corporals coordinate and rally soldiers, bridging leadership and the ranks.
+            </p>
+          </div>
+          <a
+            href="#apply-corporal"
+            className="inline-flex items-center rounded-xl border px-3 py-2 text-sm hover:bg-gray-50"
+          >
+            Apply to become a Corporal
+          </a>
+        </div>
+
+        {corporals.length === 0 ? (
+          <p className="text-gray-600">No approved corporals yet.</p>
+        ) : (
+          <ul className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {corporals.map((c) => (
+              <li key={c.id} className="border rounded-2xl p-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 rounded-full bg-gray-200 overflow-hidden">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    {c.photoUrl ? (
+                      <img src={c.photoUrl} alt={c.name} className="w-full h-full object-cover" />
+                    ) : (
+                      <div className="w-full h-full grid place-items-center text-xs text-gray-500">👤</div>
+                    )}
+                  </div>
+                  <div>
+                    <div className="font-semibold">{c.name}</div>
+                    <div className="text-xs text-gray-500">Approved Corporal</div>
+                  </div>
+                </div>
+                {c.responsibilities && <p className="text-sm text-gray-700 mt-3">{c.responsibilities}</p>}
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+
+
       {/* Foot Soldiers */}
       <section className="space-y-6">
         <div className="flex items-end justify-between">
@@ -106,7 +147,7 @@ export default async function MissionControlPage() {
             ))}
           </ul>
         )}
-        <div className="text-center text-sm text-gray-700">Faith — united we stand, divided we fall 🫡</div>
+        <div className="text-center text-sm text-gray-700">United we stand, divided we fall 🫡</div>
       </section>
 
       {/* Forms */}
