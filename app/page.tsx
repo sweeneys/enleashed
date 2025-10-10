@@ -1,12 +1,8 @@
 export const dynamic = 'force-dynamic'; // ✅ render on request
 
-import Link from "next/link";
-import { prisma } from "@/server/prisma";
-import MissionSection from "@/components/MissionSection"; // ⬅️ NEW
+import MissionSection from "@/components/MissionSection"; // Mission block with countdown, theme song, playlist
 
 export default async function Home() {
-  const works = await prisma.work.findMany({ orderBy: { createdAt: "desc" } });
-
   return (
     <div className="space-y-12">
       {/* Hero banner */}
@@ -24,40 +20,13 @@ export default async function Home() {
               Energy Unleashed
             </h1>
             <p className="text-sm md:text-base opacity-95">
-              Research, chapters, and experiments — with granular feedback
+              March to fair electricity pricing to support democracy, decarbonisation and the economy
             </p>
           </div>
         </div>
       </div>
 
-      {/* Latest Works */}
-      <div className="space-y-6">
-        <h2 className="text-2xl font-bold">Latest Works</h2>
-        <p className="text-zinc-600">
-          Explore essays, chapters, and results. Highlight sentences you love
-          and leave targeted comments.
-        </p>
-        <ul className="space-y-3">
-          {works.map((w) => (
-            <li
-              key={w.id}
-              className="border rounded-xl p-4 hover:shadow-sm transition"
-            >
-              <Link
-                href={`/work/${w.slug}`}
-                className="text-xl font-semibold underline"
-              >
-                {w.title}
-              </Link>
-              {w.summary && (
-                <p className="text-zinc-600 mt-1">{w.summary}</p>
-              )}
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      {/* 🔽 NEW: Mission section with countdown + objectives */}
+      {/* The Mission (countdown + objectives + theme song + playlist) */}
       <MissionSection />
 
       {/* Contact */}
@@ -68,7 +37,7 @@ export default async function Home() {
             href="mailto:fight@enleashed.tech"
             className="underline hover:text-zinc-900"
           >
-            shaun@sweetech.co.uk
+            fight@enleashed.tech
           </a>
         </p>
       </div>

@@ -67,3 +67,9 @@ enum Category {
   FRIENDS
 }
 
+num ChiefRole {
+WARRIOR
+BUILDER
+INVIGILATOR
+TEACHER
+}
