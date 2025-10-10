@@ -3,10 +3,11 @@ export const runtime = 'nodejs';            // allow Prisma in prod lambdas
 export const dynamic = 'force-dynamic';     // if you need fresh data each request
 
 import { prisma } from '@/server/prisma';
-import dynamic from 'next/dynamic';
+import NextDynamic from 'next/dynamic';
+
 
 // If ShareButtons (or any child) touches `window` at import time, make it client-only:
-const ShareButtons = dynamic(() => import('@/components/ShareButtons'), { ssr: false });
+const ShareButtons = NextDynamic(() => import('@/components/ShareButtons'), { ssr: false });
 // Keep your other imports exactly as before:
 import ApplyButton from '@/components/mission/ApplyButton';
 import { ChiefRole } from '@prisma/client';
