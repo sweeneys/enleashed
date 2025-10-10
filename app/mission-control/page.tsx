@@ -7,6 +7,7 @@ import ShareButtons from '@/components/ShareButtons';
 import { ChiefRole } from '@prisma/client';
 import ApplyButton from '@/components/mission/ApplyButton';
 import SoldierButton from '@/components/mission/SoldierButton';
+import React from 'react';
 
 // Simple server-side shuffle
 function shuffle<T>(arr: T[]): T[] {
@@ -76,7 +77,7 @@ export default async function MissionControlPage() {
           afterTitle={
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-3">
-                <Avatar name="Chief Truth Speaker" photoUrl="/chiefTruthSpeaker.png" />
+                <Avatar name="Chief Truth Speaker" photoUrl="/chiefTruthSpeaker.png" size="xl" />
                 <div>
                   <div className="font-semibold">Chief Truth Speaker</div>
                   <a
@@ -125,11 +126,14 @@ export default async function MissionControlPage() {
       {/* Corporals */}
       <section className="space-y-4">
         <div className="flex items-center justify-between">
-          <div>
-            <h2 className="text-2xl font-semibold">Corporals</h2>
-            <p className="text-gray-600">
-              Corporals coordinate and rally soldiers, bridging leadership and the ranks.
-            </p>
+          <div className="flex items-center gap-3">
+            <Avatar name="Corporals" photoUrl="/corporal.png" size="xl" />
+            <div>
+              <h2 className="text-2xl font-semibold">Corporals</h2>
+              <p className="text-gray-600">
+                Corporals coordinate and rally soldiers, bridging leadership and the ranks.
+              </p>
+            </div>
           </div>
           <ApplyButton role="CORPORAL" />
         </div>
@@ -147,23 +151,19 @@ export default async function MissionControlPage() {
             ))}
           </ul>
         )}
-
-        {corporals.length === 0 && (
-          <div className="flex items-center gap-3 text-sm text-gray-600">
-            <Avatar name="Corporal" photoUrl="/corporal.png" />
-            <span>First appointments coming soon.</span>
-          </div>
-        )}
       </section>
 
       {/* Foot Soldiers */}
       <section className="space-y-6">
         <div className="flex items-end justify-between">
-          <div>
-            <h2 className="text-2xl font-semibold">Foot Soldiers</h2>
-            <p className="text-gray-600">
-              The soldiers support the leaders of the mission — we need as many soldiers as we can get to deliver the mission.
-            </p>
+          <div className="flex items-center gap-3">
+            <Avatar name="Foot Soldiers" photoUrl="/corporal.png" size="xl" />
+            <div>
+              <h2 className="text-2xl font-semibold">Foot Soldiers</h2>
+              <p className="text-gray-600">
+                The soldiers support the leaders of the mission — we need as many soldiers as we can get to deliver the mission.
+              </p>
+            </div>
           </div>
           <div className="text-sm text-gray-700">
             Total soldiers: <span className="font-semibold">{soldierCount}</span>
@@ -173,19 +173,12 @@ export default async function MissionControlPage() {
         {soldiers.length > 0 && (
           <ul className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
             {soldiers.map((s) => (
-              <li key={s.id} className="border rounded-xl p-3 flex items-center gap-3">
-                <Avatar name={s.name} photoUrl={s.photoUrl} />
+              <li key={s.id} className="border rounded-2xl p-3 flex items-center gap-3">
+                <Avatar name={s.name} photoUrl={s.photoUrl} size="lg" />
                 <div className="text-sm font-medium truncate">{s.name}</div>
               </li>
             ))}
           </ul>
-        )}
-
-        {soldiers.length === 0 && (
-          <div className="flex items-center gap-3 text-sm text-gray-600">
-            <Avatar name="Soldier" photoUrl="/corporal.png" />
-            <span>Be the first to enlist — we’ll show names here.</span>
-          </div>
         )}
 
         {/* Motto — bigger */}
@@ -235,18 +228,161 @@ export default async function MissionControlPage() {
       </section>
 
       {/* Support our work */}
-      <section className="space-y-3">
-        <h2 className="text-2xl font-semibold">Support our work</h2>
-        <ul className="list-disc pl-6 text-zinc-700 space-y-1">
-          <li>Sign up for updates</li>
-          <li>Share in your network</li>
-          <li>Buy me a coffee ☕</li>
-        </ul>
-        <ShareButtons />
-        <p className="text-zinc-700">
-          Media, talks, collaborations — email{' '}
-          <a className="underline" href="mailto:fight@enleashed.tech">fight@enleashed.tech</a>.
-        </p>
+      <section className="space-y-5">
+        <h2 className="text-2xl font-semibold">Support our mission</h2>
+
+        <div className="grid md:grid-cols-2 gap-6">
+          {/* Left column */}
+          <div className="space-y-4">
+            <BlockHeading>Support our mission</BlockHeading>
+            <ul className="list-disc pl-6 text-zinc-700 space-y-1">
+              <li>Sign up for updates</li>
+              <li>Share in your network</li>
+              <li>
+                <a
+                  href="https://buymeacoffee.com/shaunsweeney"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="underline"
+                >
+                  Buy me a coffee ☕
+                </a>
+              </li>
+            </ul>
+
+            <div className="space-y-2">
+              <div className="text-sm font-medium text-zinc-700">Quick share</div>
+              <div className="flex flex-wrap gap-3">
+                <a
+                  href="https://twitter.com/intent/tweet?text=Check%20out%20the%20Enleashed%20mission&url=https%3A%2F%2Fenleashed.tech"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center rounded-xl border px-3 py-2 text-sm hover:bg-gray-100"
+                >
+                  Share on X
+                </a>
+                <a
+                  href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fenleashed.tech"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center rounded-xl border px-3 py-2 text-sm hover:bg-gray-100"
+                >
+                  Share on LinkedIn
+                </a>
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (navigator.share) {
+                      navigator
+                        .share({ title: 'Enleashed', url: 'https://enleashed.tech' })
+                        .catch(() => {});
+                    } else {
+                      navigator.clipboard?.writeText('https://enleashed.tech');
+                    }
+                  }}
+                  className="inline-flex items-center rounded-xl border px-3 py-2 text-sm hover:bg-gray-100"
+                >
+                  Share…
+                </button>
+                <button
+                  type="button"
+                  onClick={() => navigator.clipboard?.writeText('https://enleashed.tech')}
+                  className="inline-flex items-center rounded-xl border px-3 py-2 text-sm hover:bg-gray-100"
+                >
+                  Copy link
+                </button>
+              </div>
+              {/* Keep your reusable component too */}
+              <ShareButtons />
+            </div>
+
+            <BlockHeading>Critique &amp; Challenge</BlockHeading>
+            <p className="text-zinc-700">
+              Use highlights, comments, and open discussion to ensure the solution remains inclusive,
+              transparent, and representative of the people it serves.
+            </p>
+          </div>
+
+          {/* Right column */}
+          <div className="space-y-4">
+            <BlockHeading>Help build the solution</BlockHeading>
+            <p className="text-zinc-700">
+              Are you a builder, designer, or data scientist who wants to help shape the platform?
+              Get in touch by email:{' '}
+              <a className="underline" href="mailto:fight@enleashed.tech">
+                fight@enleashed.tech
+              </a>
+              .
+            </p>
+
+            <BlockHeading>Enable delivery</BlockHeading>
+            <p className="text-zinc-700">
+              We’re seeking collaboration with partners, funders, civic institutions, and innovators.
+              Together we can build the frameworks that let this mission thrive.
+            </p>
+
+            <BlockHeading>Work in your community</BlockHeading>
+            <p className="text-zinc-700">
+              Be the change you wish to see in the world — launch sustainability initiatives, share
+              learning materials, and bring people together around practical energy solutions.
+            </p>
+
+            <BlockHeading>Spread the word</BlockHeading>
+            <p className="text-zinc-700">
+              Share this project widely. The more people know, the stronger the movement becomes.
+            </p>
+
+            <div className="flex flex-wrap gap-3">
+              <a
+                href="https://twitter.com/intent/tweet?text=Check%20out%20the%20Enleashed%20mission&url=https%3A%2F%2Fenleashed.tech"
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center rounded-xl border px-3 py-2 text-sm hover:bg-gray-100"
+              >
+                Share on X
+              </a>
+              <a
+                href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fenleashed.tech"
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center rounded-xl border px-3 py-2 text-sm hover:bg-gray-100"
+              >
+                Share on LinkedIn
+              </a>
+              <button
+                type="button"
+                onClick={() => {
+                  if (navigator.share) {
+                    navigator
+                      .share({ title: 'Enleashed', url: 'https://enleashed.tech' })
+                      .catch(() => {});
+                  } else {
+                    navigator.clipboard?.writeText('https://enleashed.tech');
+                  }
+                }}
+                className="inline-flex items-center rounded-xl border px-3 py-2 text-sm hover:bg-gray-100"
+              >
+                Share…
+              </button>
+              <button
+                type="button"
+                onClick={() => navigator.clipboard?.writeText('https://enleashed.tech')}
+                className="inline-flex items-center rounded-xl border px-3 py-2 text-sm hover:bg-gray-100"
+              >
+                Copy link
+              </button>
+            </div>
+
+            <BlockHeading>Speak &amp; Communicate</BlockHeading>
+            <p className="text-zinc-700">
+              For media, talks, and outreach opportunities, please reach out directly at{' '}
+              <a className="underline" href="mailto:fight@enleashed.tech">
+                fight@enleashed.tech
+              </a>
+              .
+            </p>
+          </div>
+        </div>
       </section>
     </main>
   );
@@ -270,16 +406,16 @@ function TeamBlock({
   const hasItems = items.length > 0;
   return (
     <div className="space-y-3">
+      {/* Header with consistent icon position (left), matching Corporals pattern */}
       <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-        <div>
-          <h3 className="text-xl font-semibold">{title}</h3>
-          <p className="text-gray-600">{intro}</p>
+        <div className="flex items-center gap-3">
+          <Avatar name={title} photoUrl={defaultIcon} size="xl" />
+          <div>
+            <h3 className="text-xl font-semibold">{title}</h3>
+            <p className="text-gray-600">{intro}</p>
+          </div>
         </div>
-        <div className="flex items-center gap-4">
-          {/* section default icon */}
-          <Avatar name={title} photoUrl={defaultIcon} />
-          {afterTitle}
-        </div>
+        <div className="flex items-center gap-4">{afterTitle}</div>
       </div>
 
       {hasItems && (
@@ -294,12 +430,6 @@ function TeamBlock({
             />
           ))}
         </ul>
-      )}
-
-      {!hasItems && (
-        <div className="text-sm text-gray-600 flex items-center gap-3">
-          <span>First appointments coming soon.</span>
-        </div>
       )}
     </div>
   );
@@ -319,7 +449,7 @@ function CardPerson({
   return (
     <li className="border rounded-2xl p-4">
       <div className="flex items-center gap-3">
-        <Avatar name={name} photoUrl={photoUrl} />
+        <Avatar name={name} photoUrl={photoUrl} size="lg" />
         <div>
           <div className="font-semibold">{name}</div>
           <div className="text-xs text-gray-500">{title}</div>
@@ -330,15 +460,33 @@ function CardPerson({
   );
 }
 
-function Avatar({ name, photoUrl }: { name: string; photoUrl: string | null }) {
+function Avatar({
+  name,
+  photoUrl,
+  size = 'md',
+}: {
+  name: string;
+  photoUrl: string | null;
+  size?: 'sm' | 'md' | 'lg' | 'xl';
+}) {
   const initials = name
     .split(' ')
     .filter(Boolean)
     .slice(0, 2)
     .map((s) => s[0]?.toUpperCase())
     .join('');
+
+  const sizeClass =
+    size === 'xl'
+      ? 'w-16 h-16'
+      : size === 'lg'
+      ? 'w-14 h-14'
+      : size === 'sm'
+      ? 'w-10 h-10'
+      : 'w-12 h-12';
+
   return (
-    <div className="w-12 h-12 rounded-full bg-gray-200 overflow-hidden grid place-items-center text-sm text-gray-600">
+    <div className={`${sizeClass} rounded-full bg-gray-200 overflow-hidden grid place-items-center text-sm text-gray-600`}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       {photoUrl ? (
         <img src={photoUrl} alt={name} className="w-full h-full object-cover" />
@@ -347,4 +495,8 @@ function Avatar({ name, photoUrl }: { name: string; photoUrl: string | null }) {
       )}
     </div>
   );
+}
+
+function BlockHeading({ children }: { children: React.ReactNode }) {
+  return <h3 className="text-lg font-semibold">{children}</h3>;
 }
