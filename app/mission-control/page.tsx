@@ -3,8 +3,7 @@ export const runtime = 'nodejs';            // allow Prisma in prod lambdas
 export const dynamic = 'force-dynamic';     // if you need fresh data each request
 
 import { prisma } from '@/server/prisma';
-import NextDynamic from 'next/dynamic';
-
+import NextDynamic from 'next/dynamic';     // alias to avoid clash with export above
 
 // If ShareButtons (or any child) touches `window` at import time, make it client-only:
 const ShareButtons = NextDynamic(() => import('@/components/ShareButtons'), { ssr: false });
@@ -65,7 +64,8 @@ export default async function MissionControlPage() {
 
       {/* keep any hero/intro, stats, share, apply, etc. */}
       <div className="mb-6 flex items-center gap-3">
-        <ApplyButton role={ChiefRole.CHIEF_INVIGILATOR} />
+        {/* use INVIGILATOR since CHIEF_INVIGILATOR isn't in the enum */}
+        <ApplyButton role={ChiefRole.INVIGILATOR} />
         <ShareButtons />
       </div>
 
