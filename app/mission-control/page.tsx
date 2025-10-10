@@ -160,7 +160,7 @@ export default async function MissionControlPage() {
           {/* Replace with your live stream URL or channel embed */}
           <iframe
             className="w-full h-full"
-            src="https://www.youtube.com/embed/live_stream?channel=YOUR_CHANNEL_ID&autoplay=0&rel=0"
+            src="https://www.youtube.com/embed/live_stream?channel=UC2rBbKaZtQ-dB-9dqD583Xg&autoplay=0&rel=0"
             title="Watch us work — YouTube Live"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             allowFullScreen
