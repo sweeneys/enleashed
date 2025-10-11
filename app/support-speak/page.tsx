@@ -1,6 +1,7 @@
 export const dynamic = 'force-dynamic';
 
 import ShareButtons from "@/components/ShareButtons";
+import SoldierButton from "@/components/mission/SoldierButton";
 
 export default function SupportSpeakPage() {
   return (
@@ -10,6 +11,37 @@ export default function SupportSpeakPage() {
         Every mission needs its voices — those who build, critique, fund, share, and speak for it.
         Join us in shaping the fair electricity future and help make science, policy, and innovation inclusive for all.
       </p>
+
+      {/* Join the mission as a soldier */}
+      <section className="grid gap-8 md:grid-cols-2">
+        <div className="space-y-2">
+          <h2 className="text-2xl font-semibold">Join the mission as a soldier!</h2>
+          <p className="text-zinc-700">
+            <strong>What’s a soldier?</strong> Someone who follows and trusts the judgment of the leaders.
+          </p>
+          <div className="space-y-2">
+            <p className="text-zinc-700 font-medium">Your responsibilities as a soldier shall include:</p>
+            <ul className="list-disc pl-5 text-zinc-700 space-y-1">
+              <li>Keeping the leaders honest</li>
+              <li>
+                Making sure you contribute your views to maximise the likelihood that the mission succeeds — there is
+                strength in diversity (if you have any, if not, your service and grace are in no way diminished)
+              </li>
+              <li>
+                Ensuring you are aligned with the mission and will follow the leaders into battle for energy justice
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="border rounded-2xl bg-gradient-to-r from-blue-50 to-indigo-50 p-6 space-y-4 shadow-sm">
+          <h3 className="text-xl font-semibold">Join the mission if you accept the call 🫡</h3>
+          <p className="text-gray-700">
+            Enlist to show support, get updates, and be part of the mobilisation.
+          </p>
+          <SoldierButton />
+        </div>
+      </section>
 
       {/* 1. Support our mission */}
       <section className="space-y-4">

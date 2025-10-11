@@ -227,14 +227,15 @@ export default async function MissionControlPage() {
           </ul>
         )}
 
-        <div className="text-center text-2xl font-semibold">
-          United we stand, divided we fall 🫡
-        </div>
+      <div className="text-center text-2xl font-semibold">
+        United we stand, divided we fall 🫡
+      </div>
 
-        <div className="text-center">
-          <SoldierButton />
-        </div>
-      </section>
+      <div className="text-center">
+        {/* Outline variant to match other buttons on this page */}
+        <SoldierButton variant="outline" label="Enlist as a soldier" />
+      </div>
+
 
       {/* Watch the leaders work */}
       <section className="space-y-4">
