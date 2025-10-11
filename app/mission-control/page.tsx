@@ -145,7 +145,7 @@ export default async function MissionControlPage() {
           title="Chief Builders"
           intro="The builders deliver the mission to MVP spec in close collaboration with the invigilators"
           items={groupedChiefs.BUILDER}
-          defaultIcon="/teacher.png" // temporary placeholder icon
+          defaultIcon="/builder.png" 
           afterTitle={<ApplyButton role="BUILDER" />}
         />
 
