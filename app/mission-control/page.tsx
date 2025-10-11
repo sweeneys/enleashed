@@ -145,7 +145,7 @@ export default async function MissionControlPage() {
           title="Chief Builders"
           intro="The builders deliver the mission to MVP spec in close collaboration with the invigilators"
           items={groupedChiefs.BUILDER}
-          defaultIcon="/builder.png" 
+          defaultIcon="/builder.png"
           afterTitle={<ApplyButton role="BUILDER" />}
         />
 
@@ -227,15 +227,15 @@ export default async function MissionControlPage() {
           </ul>
         )}
 
-      <div className="text-center text-2xl font-semibold">
-        United we stand, divided we fall 🫡
-      </div>
+        <div className="text-center text-2xl font-semibold">
+          United we stand, divided we fall 🫡
+        </div>
 
-      <div className="text-center">
-        {/* Outline variant to match other buttons on this page */}
-        <SoldierButton variant="outline" label="Enlist as a soldier" />
-      </div>
-
+        <div className="text-center">
+          {/* Outline variant to match other buttons on this page */}
+          <SoldierButton variant="outline" label="Enlist as a soldier" />
+        </div>
+      </section>
 
       {/* Watch the leaders work */}
       <section className="space-y-4">
@@ -268,11 +268,7 @@ export default async function MissionControlPage() {
               <li>Sign up for updates</li>
               <li>Share in your network</li>
               <li>
-                <a
-                  target="_blank"
-                  rel="noreferrer"
-                  className="underline"
-                >
+                <a target="_blank" rel="noreferrer" className="underline">
                   Buy us a coffee ☕ (group link later)
                 </a>
               </li>
@@ -281,7 +277,6 @@ export default async function MissionControlPage() {
             <div className="space-y-2">
               <div className="text-sm font-medium text-zinc-700">Quick share</div>
               <QuickShare url="https://enleashed.tech" title="Enleashed" />
-              {/* Keep your reusable component too */}
               <ShareButtons />
             </div>
 
@@ -337,6 +332,8 @@ export default async function MissionControlPage() {
     </main>
   );
 }
+
+/* ====== helpers ====== */
 
 function TeamBlock({
   title,
