@@ -7,6 +7,7 @@ import { prisma } from '@/server/prisma';
 import ShareButtons from '@/components/ShareButtons';
 import ApplyButton from '@/components/mission/ApplyButton';
 import SoldierButton from '@/components/mission/SoldierButton';
+import QuickShare from '@/components/QuickShare';
 
 // Simple server-side shuffle
 function shuffle<T>(arr: T[]): T[] {
@@ -57,7 +58,6 @@ export default async function MissionControlPage() {
       prisma.soldier.count(),
     ]);
 
-    // Coerce to the string union (guards in case Prisma type narrows differently)
     approvedChiefs = chiefs.map((c) => ({
       ...c,
       role: String(c.role).toUpperCase() as ChiefRoleStr,
@@ -74,7 +74,6 @@ export default async function MissionControlPage() {
     soldiersAll = soldiers.map((s) => ({ ...s, photoUrl: s.photoUrl ?? null }));
     soldierCount = count ?? 0;
   } catch {
-    // Fall back to empty UI; page should still render
     approvedChiefs = [];
     corporals = [];
     soldiersAll = [];
@@ -120,7 +119,7 @@ export default async function MissionControlPage() {
           title="Chief Warriors"
           intro="The warriors lead the soldiers in achieving the mission"
           items={groupedChiefs.WARRIOR}
-          defaultIcon="/chiefTruthSpeaker.png"
+          defaultIcon="/wolf.png"
           afterTitle={
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-3">
@@ -185,13 +184,14 @@ export default async function MissionControlPage() {
         {corporals.length > 0 && (
           <ul className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
             {corporals.map((c) => (
-              <CardPerson
-                key={c.id}
-                name={c.name}
-                photoUrl={c.photoUrl || '/corporal.png'}
-                title="Approved Corporal"
-                blurb={c.responsibilities || ''}
-              />
+              <li key={c.id} className="border rounded-2xl p-4">
+                <CardPerson
+                  name={c.name}
+                  photoUrl={c.photoUrl || '/corporal.png'}
+                  title="Approved Corporal"
+                  blurb={c.responsibilities || ''}
+                />
+              </li>
             ))}
           </ul>
         )}
@@ -217,9 +217,11 @@ export default async function MissionControlPage() {
         {soldiers.length > 0 && (
           <ul className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
             {soldiers.map((s) => (
-              <li key={s.id} className="border rounded-2xl p-3 flex items-center gap-3">
-                <Avatar name={s.name} photoUrl={s.photoUrl} size="lg" />
-                <div className="text-sm font-medium truncate">{s.name}</div>
+              <li key={s.id} className="border rounded-2xl p-3">
+                <div className="flex items-center gap-3">
+                  <Avatar name={s.name} photoUrl={s.photoUrl} size="lg" />
+                  <div className="text-sm font-medium truncate">{s.name}</div>
+                </div>
               </li>
             ))}
           </ul>
@@ -278,50 +280,8 @@ export default async function MissionControlPage() {
 
             <div className="space-y-2">
               <div className="text-sm font-medium text-zinc-700">Quick share</div>
-              <div className="flex flex-wrap gap-3">
-                <a
-                  href="https://twitter.com/intent/tweet?text=Check%20out%20the%20Enleashed%20mission&url=https%3A%2F%2Fenleashed.tech"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center rounded-xl border px-3 py-2 text-sm hover:bg-gray-100"
-                >
-                  Share on X
-                </a>
-                <a
-                  href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fenleashed.tech"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center rounded-xl border px-3 py-2 text-sm hover:bg-gray-100"
-                >
-                  Share on LinkedIn
-                </a>
-                <button
-                  type="button"
-                  onClick={() => {
-                    if (typeof navigator !== 'undefined' && (navigator as any).share) {
-                      (navigator as any)
-                        .share({ title: 'Enleashed', url: 'https://enleashed.tech' })
-                        .catch(() => {});
-                    } else if (typeof navigator !== 'undefined' && navigator.clipboard) {
-                      navigator.clipboard.writeText('https://enleashed.tech');
-                    }
-                  }}
-                  className="inline-flex items-center rounded-xl border px-3 py-2 text-sm hover:bg-gray-100"
-                >
-                  Share…
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    if (typeof navigator !== 'undefined' && navigator.clipboard) {
-                      navigator.clipboard.writeText('https://enleashed.tech');
-                    }
-                  }}
-                  className="inline-flex items-center rounded-xl border px-3 py-2 text-sm hover:bg-gray-100"
-                >
-                  Copy link
-                </button>
-              </div>
+              <QuickShare url="https://enleashed.tech" title="Enleashed" />
+              {/* Keep your reusable component too */}
               <ShareButtons />
             </div>
 
@@ -361,50 +321,7 @@ export default async function MissionControlPage() {
               Share this project widely. The more people know, the stronger the movement becomes.
             </p>
 
-            <div className="flex flex-wrap gap-3">
-              <a
-                href="https://twitter.com/intent/tweet?text=Check%20out%20the%20Enleashed%20mission&url=https%3A%2F%2Fenleashed.tech"
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center rounded-xl border px-3 py-2 text-sm hover:bg-gray-100"
-              >
-                Share on X
-              </a>
-              <a
-                href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fenleashed.tech"
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center rounded-xl border px-3 py-2 text-sm hover:bg-gray-100"
-              >
-                Share on LinkedIn
-              </a>
-              <button
-                type="button"
-                onClick={() => {
-                  if (typeof navigator !== 'undefined' && (navigator as any).share) {
-                    (navigator as any)
-                      .share({ title: 'Enleashed', url: 'https://enleashed.tech' })
-                      .catch(() => {});
-                  } else if (typeof navigator !== 'undefined' && navigator.clipboard) {
-                    navigator.clipboard.writeText('https://enleashed.tech');
-                  }
-                }}
-                className="inline-flex items-center rounded-xl border px-3 py-2 text-sm hover:bg-gray-100"
-              >
-                Share…
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  if (typeof navigator !== 'undefined' && navigator.clipboard) {
-                    navigator.clipboard.writeText('https://enleashed.tech');
-                  }
-                }}
-                className="inline-flex items-center rounded-xl border px-3 py-2 text-sm hover:bg-gray-100"
-              >
-                Copy link
-              </button>
-            </div>
+            <QuickShare url="https://enleashed.tech" title="Enleashed" />
 
             <BlockHeading>Speak &amp; Communicate</BlockHeading>
             <p className="text-zinc-700">
@@ -452,13 +369,14 @@ function TeamBlock({
       {hasItems && (
         <ul className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
           {items.map((c) => (
-            <CardPerson
-              key={c.id}
-              name={c.name}
-              photoUrl={c.photoUrl || defaultIcon}
-              title="Approved Chief"
-              blurb={c.responsibilities || undefined}
-            />
+            <li key={c.id} className="border rounded-2xl p-4">
+              <CardPerson
+                name={c.name}
+                photoUrl={c.photoUrl || defaultIcon}
+                title="Approved Chief"
+                blurb={c.responsibilities || undefined}
+              />
+            </li>
           ))}
         </ul>
       )}
@@ -478,7 +396,7 @@ function CardPerson({
   blurb?: string;
 }) {
   return (
-    <li className="border rounded-2xl p-4">
+    <div>
       <div className="flex items-center gap-3">
         <Avatar name={name} photoUrl={photoUrl} size="lg" />
         <div>
@@ -487,7 +405,7 @@ function CardPerson({
         </div>
       </div>
       {blurb ? <p className="text-sm text-gray-700 mt-3">{blurb}</p> : null}
-    </li>
+    </div>
   );
 }
 
