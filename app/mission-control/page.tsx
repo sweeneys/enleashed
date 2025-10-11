@@ -268,12 +268,11 @@ export default async function MissionControlPage() {
               <li>Share in your network</li>
               <li>
                 <a
-                  href="https://buymeacoffee.com/shaunsweeney"
                   target="_blank"
                   rel="noreferrer"
                   className="underline"
                 >
-                  Buy me a coffee ☕
+                  Buy us a coffee ☕ (group link later)
                 </a>
               </li>
             </ul>
