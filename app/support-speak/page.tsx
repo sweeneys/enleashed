@@ -17,7 +17,7 @@ export default function SupportSpeakPage() {
         <ul className="list-disc pl-6 text-zinc-700 space-y-1">
           <li>Sign up for updates</li>
           <li>Share in your network</li>
-          <li>Buy me a coffee ☕</li>
+          <li>Buy us a coffee ☕ (group link later)</li>
         </ul>
         <ShareButtons />
       </section>
